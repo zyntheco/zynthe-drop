@@ -5,16 +5,16 @@ export const Hero = () => {
   const [sectionExit, setSectionExit] = useState(false);
 
   useEffect(() => {
-    // Bottle enters
-    setTimeout(() => setBottleAnimated(true), 300);
+    // Bottle enters immediately
+    setTimeout(() => setBottleAnimated(true), 100);
     
-    // Section transitions out
-    setTimeout(() => setSectionExit(true), 3500);
+    // Section transitions out faster
+    setTimeout(() => setSectionExit(true), 2000);
   }, []);
 
   return (
     <section 
-      className={`relative min-h-screen flex items-center justify-center overflow-hidden transition-all duration-1000 ${
+      className={`relative min-h-[70vh] flex items-center justify-center overflow-hidden transition-all duration-1000 ${
         sectionExit ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'
       }`}
     >
