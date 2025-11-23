@@ -31,12 +31,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         className="group cursor-pointer"
         onClick={() => setIsModalOpen(true)}
       >
-        <div className="relative aspect-square bg-card overflow-hidden mb-4">
+        <div className="relative aspect-square bg-card overflow-hidden mb-4 border border-border/50 hover:border-primary/50 transition-all duration-300">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
           />
+          
+          {/* Hover glow */}
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <div className="absolute bottom-4 left-4">
             <p className="text-xs font-mono text-foreground bg-background/90 px-2 py-1">
               {product.edition}

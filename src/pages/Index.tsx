@@ -1,7 +1,7 @@
 import { CountdownBanner } from "@/components/CountdownBanner";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { StatsBar } from "@/components/StatsBar";
+import { StorySection } from "@/components/StorySection";
 import { ProductGrid } from "@/components/ProductGrid";
 import { Manifesto } from "@/components/Manifesto";
 import { EmailCapture } from "@/components/EmailCapture";
@@ -13,7 +13,7 @@ const Index = () => {
       <CountdownBanner />
       <Header />
       <Hero />
-      <StatsBar />
+      <StorySection />
       <ProductGrid />
       <Manifesto />
       <EmailCapture />

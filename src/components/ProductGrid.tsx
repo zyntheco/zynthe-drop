@@ -41,11 +41,25 @@ const products: Product[] = [
 
 export const ProductGrid = () => {
   return (
-    <section className="py-16">
-      <div className="container mx-auto px-4">
+    <section className="py-24 relative">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">CURRENT DROPS</h2>
+          <p className="text-muted-foreground text-lg">Limited pieces. Once gone, gone forever.</p>
+        </div>
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products.map((product, index) => (
+            <div 
+              key={product.id}
+              className="animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
       </div>
