@@ -5,12 +5,12 @@ export const StorySection = () => {
 
   useEffect(() => {
     // Section slides in after hero exits
-    setTimeout(() => setIsVisible(true), 3800);
+    setTimeout(() => setIsVisible(true), 2200);
   }, []);
 
   return (
     <section 
-      className={`min-h-screen flex items-center justify-center px-4 transition-all duration-1000 ${
+      className={`min-h-[60vh] flex items-center justify-center px-4 py-16 transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
       }`}
     >
