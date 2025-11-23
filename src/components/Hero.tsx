@@ -14,7 +14,7 @@ export const Hero = () => {
 
   return (
     <section 
-      className={`relative h-[60vh] flex items-center justify-center overflow-hidden transition-all duration-1000 ${
+      className={`relative h-[40vh] flex items-center justify-center overflow-hidden transition-all duration-1000 ${
         sectionExit ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'
       }`}
     >
