@@ -10,7 +10,7 @@ export const StorySection = () => {
 
   return (
     <section 
-      className={`min-h-[60vh] flex items-center justify-center px-4 py-16 transition-all duration-1000 ${
+      className={`h-[50vh] flex items-center justify-center px-4 transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
       }`}
     >
