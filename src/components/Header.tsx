@@ -1,12 +1,13 @@
 import { Search, User, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/zynthe-logo.png";
 
 export const Header = () => {
   return (
     <header className="border-b border-border">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <h1 className="text-2xl font-bold tracking-widest text-primary">ZYNTHE</h1>
+          <img src={logo} alt="ZYNTHE" className="h-8 w-auto" />
           <nav className="hidden md:flex gap-6">
             <button className="text-sm tracking-wider hover:text-primary transition-colors">NEW</button>
             <button className="text-sm tracking-wider hover:text-primary transition-colors">ARCHIVE</button>
