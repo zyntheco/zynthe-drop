@@ -9,6 +9,7 @@ const products: Product[] = [
     edition: "025/100",
     status: "LIVE",
     image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=800&h=800&fit=crop",
+    colors: 3,
   },
   {
     id: "2",
@@ -18,6 +19,7 @@ const products: Product[] = [
     edition: "012/050",
     status: "SOLD OUT",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
+    colors: 3,
   },
   {
     id: "3",
@@ -27,6 +29,7 @@ const products: Product[] = [
     edition: "041/075",
     status: "LIVE",
     image: "https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?w=800&h=800&fit=crop",
+    colors: 3,
   },
   {
     id: "4",
@@ -36,6 +39,7 @@ const products: Product[] = [
     edition: "008/025",
     status: "COMING SOON",
     image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&h=800&fit=crop",
+    colors: 3,
   },
 ];
 
