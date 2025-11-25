@@ -41,32 +41,16 @@ const products: Product[] = [
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
     colors: 3,
   },
-  {
-    id: "5",
-    name: "CERAMIC WAVE VASE",
-    category: "Home Sculpture",
-    price: 18000,
-    edition: "055/100",
-    status: "LIVE",
-    image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&h=800&fit=crop",
-    colors: 3,
-  },
-  {
-    id: "6",
-    name: "NEON FLUX PANEL",
-    category: "Wall Art",
-    price: 42000,
-    edition: "019/050",
-    status: "LIVE",
-    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&h=800&fit=crop",
-    colors: 3,
-  },
 ];
 
-export const ProductCarousel = () => {
+type ProductCarouselProps = {
+  onAddToCart?: (product: Product) => void;
+};
+
+export const ProductCarousel = ({ onAddToCart }: ProductCarouselProps) => {
   return (
     <section className="bg-[#0A0A0A] py-8 md:py-12 overflow-hidden">
-      <div 
+      <div
         className="flex overflow-x-auto gap-4 px-5 scrollbar-hide snap-x snap-mandatory scroll-smooth"
         style={{
           WebkitOverflowScrolling: 'touch',
@@ -75,11 +59,11 @@ export const ProductCarousel = () => {
         }}
       >
         {products.map((product) => (
-          <div 
+          <div
             key={product.id}
             className="flex-shrink-0 snap-center w-[280px] md:w-[320px] lg:w-[360px]"
           >
-            <ProductCard product={product} />
+            <ProductCard product={product} onAddToCart={onAddToCart} />
           </div>
         ))}
       </div>

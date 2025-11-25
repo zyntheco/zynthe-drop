@@ -22,11 +22,6 @@ export const Footer = () => {
           ))}
         </div>
 
-        {/* Powered By */}
-        <p className="text-sm text-muted-foreground/60 text-center">
-          POWERED BY SHOPIFY
-        </p>
-
         {/* Copyright */}
         <p className="text-xs text-muted-foreground/40 text-center mt-6">
           © 2024 ZYNTHE. ALL PIECES NUMBERED AND AUTHENTICATED.
