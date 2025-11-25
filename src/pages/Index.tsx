@@ -1,8 +1,8 @@
 import { TextCarousel } from "@/components/TextCarousel";
 import { Header } from "@/components/Header";
-import { HeroCarousel } from "@/components/HeroCarousel";
-import { StorySection } from "@/components/StorySection";
-import { ProductGrid } from "@/components/ProductGrid";
+import { Hero } from "@/components/Hero";
+import { CategoryHeader } from "@/components/CategoryHeader";
+import { ProductCarousel } from "@/components/ProductCarousel";
 import { Manifesto } from "@/components/Manifesto";
 import { EmailCapture } from "@/components/EmailCapture";
 import { Footer } from "@/components/Footer";
@@ -12,9 +12,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <TextCarousel />
       <Header />
-      <HeroCarousel />
-      <StorySection />
-      <ProductGrid />
+      <Hero />
+      <CategoryHeader />
+      <ProductCarousel />
       <Manifesto />
       <EmailCapture />
       <Footer />
