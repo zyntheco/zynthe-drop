@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { ProductModal } from "./ProductModal";
+import { Link } from "react-router-dom";
 
 export type Product = {
   id: string;
@@ -17,8 +16,6 @@ type ProductCardProps = {
 };
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const statusColors = {
     "LIVE": "bg-live text-primary-foreground",
     "SOLD OUT": "bg-sold-out text-destructive-foreground",
@@ -26,11 +23,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <>
-      <div 
-        className="group cursor-pointer"
-        onClick={() => setIsModalOpen(true)}
-      >
+    <Link to={`/product/${product.id}`} className="group cursor-pointer block">
+      <div>
         <div className="relative aspect-square bg-card overflow-hidden mb-4 border border-border/50 hover:border-primary/50 transition-all duration-300">
           <img
             src={product.image}
@@ -57,12 +51,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <p className="text-xl font-mono text-primary">₹{product.price.toLocaleString()}</p>
         </div>
       </div>
-      
-      <ProductModal 
-        product={product}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </>
+    </Link>
   );
 };

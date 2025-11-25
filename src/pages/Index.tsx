@@ -1,6 +1,6 @@
-import { CountdownBanner } from "@/components/CountdownBanner";
+import { TextCarousel } from "@/components/TextCarousel";
 import { Header } from "@/components/Header";
-import { Hero } from "@/components/Hero";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import { StorySection } from "@/components/StorySection";
 import { ProductGrid } from "@/components/ProductGrid";
 import { Manifesto } from "@/components/Manifesto";
@@ -10,9 +10,9 @@ import { Footer } from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <CountdownBanner />
+      <TextCarousel />
       <Header />
-      <Hero />
+      <HeroCarousel />
       <StorySection />
       <ProductGrid />
       <Manifesto />
