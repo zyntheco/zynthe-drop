@@ -5,11 +5,25 @@ export const Hero = () => {
     <section className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
       {/* Background image with blending */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
+        className="absolute inset-0 opacity-40"
         style={{
           backgroundImage: `url(${heroBg})`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          transform: 'rotate(-30deg) scale(0.7)',
         }}
-      ></div>
+      >
+        <style>
+          {`
+            @media (max-width: 768px) {
+              div[style*="rotate(-30deg)"] {
+                transform: rotate(-30deg) scale(1.3) !important;
+              }
+            }
+          `}
+        </style>
+      </div>
 
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/50"></div>

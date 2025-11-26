@@ -42,7 +42,7 @@ const RefundPolicy = () => {
           <section>
             <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-wider">Contact Us</h2>
             <p className="leading-relaxed">
-              For refund inquiries, please contact us at refunds@zynthe.com with your order number and details.
+              For refund inquiries, please contact us at info@zynthe.co with your order number and details.
             </p>
           </section>
         </div>

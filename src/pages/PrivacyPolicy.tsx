@@ -52,7 +52,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-wider">Contact Us</h2>
             <p className="leading-relaxed">
-              If you have any questions about this Privacy Policy, please contact us at privacy@zynthe.com
+              If you have any questions about this Privacy Policy, please contact us at info@zynthe.co
             </p>
           </section>
         </div>

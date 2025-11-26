@@ -1,8 +1,7 @@
 export const TextCarousel = () => {
   const messages = [
     "LIMITED EDITIONS • HANDCRAFTED WITH INTENTION",
-    "FREE SHIPPING WORLDWIDE • SECURE CHECKOUT",
-    "NEW DROPS EVERY MONTH • JOIN THE COMMUNITY",
+    "NEW DROPS EVERY MONTH",
   ];
 
   return (

@@ -57,7 +57,7 @@ const TermsOfService = () => {
           <section>
             <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-wider">Contact Us</h2>
             <p className="leading-relaxed">
-              For questions about these Terms of Service, please contact us at legal@zynthe.com
+              For questions about these Terms of Service, please contact us at info@zynthe.co
             </p>
           </section>
         </div>
