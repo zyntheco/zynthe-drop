@@ -75,6 +75,15 @@ All colors MUST be HSL.
     display: none;
   }
 
+  @keyframes flash {
+    0%, 20%, 100% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+  }
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;

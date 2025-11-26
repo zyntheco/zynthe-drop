@@ -1,54 +1,20 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { TextCarousel } from "@/components/TextCarousel";
-
-// Mock product data - in a real app, this would come from an API
-const products = [
-  {
-    id: "1",
-    name: "ZYNTH FIGURE 01",
-    category: "Collectible Doll",
-    price: 34000,
-    edition: "025/100",
-    status: "LIVE" as const,
-    image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=800&h=800&fit=crop",
-  },
-  {
-    id: "2",
-    name: "M-SERIES DISC LIGHT",
-    category: "Automotive Art",
-    price: 52000,
-    edition: "012/050",
-    status: "SOLD OUT" as const,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
-  },
-  {
-    id: "3",
-    name: "BEAR CONTROLLER THRONE",
-    category: "Gaming Sculpture",
-    price: 22000,
-    edition: "041/075",
-    status: "LIVE" as const,
-    image: "https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?w=800&h=800&fit=crop",
-  },
-  {
-    id: "4",
-    name: "MONOLITH RUG 01",
-    category: "Textile Art",
-    price: 68000,
-    edition: "008/025",
-    status: "COMING SOON" as const,
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&h=800&fit=crop",
-  },
-];
+import { products } from "@/components/ProductCarousel";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
   
   const product = products.find(p => p.id === id);
   
@@ -86,7 +52,7 @@ const ProductDetail = () => {
   const buttonConfig = getButtonConfig();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background animate-fade-in">
       <TextCarousel />
       <Header />
       
@@ -125,13 +91,67 @@ const ProductDetail = () => {
               <p className="text-muted-foreground">RELEASE: <span className="text-foreground">2024</span></p>
             </div>
 
-            <Button 
-              className="w-full tracking-wider text-sm py-6"
-              variant={buttonConfig.variant}
-              disabled={buttonConfig.disabled}
-            >
-              {buttonConfig.text}
-            </Button>
+            <div className="space-y-3">
+              <Button 
+                className="w-full tracking-wider text-sm py-6"
+                variant={buttonConfig.variant}
+                disabled={buttonConfig.disabled}
+              >
+                {buttonConfig.text}
+              </Button>
+              <Button 
+                className="w-full tracking-wider text-sm py-6"
+                variant="outline"
+              >
+                BUY IT NOW
+              </Button>
+            </div>
+
+            {/* Product Details Section */}
+            <div className="mt-12 space-y-8 border-t border-border pt-8">
+              <div className="space-y-4">
+                <h3 className="text-lg font-bold uppercase tracking-wider">DETAILS</h3>
+                <div className="space-y-3 text-sm leading-relaxed">
+                  <p className="font-bold uppercase">INTRODUCING {product.name}</p>
+                  <p>
+                    A premium collectible crafted with exceptional attention to detail. 
+                    Each piece is individually numbered and comes with a certificate of authenticity.
+                  </p>
+                  <div className="space-y-2 mt-4">
+                    <p className="font-bold uppercase">FEATURES:</p>
+                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                      <li>Premium materials and construction</li>
+                      <li>Limited edition numbered piece</li>
+                      <li>Certificate of authenticity included</li>
+                      <li>Designed by renowned artists</li>
+                    </ul>
+                  </div>
+                  <p className="mt-4">
+                    Each piece is carefully packaged to ensure it arrives in perfect condition. 
+                    A true collector's item that will appreciate in value over time.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4 border-t border-border pt-8">
+                <h3 className="text-lg font-bold uppercase tracking-wider">CARE</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Handle with care. Clean with a soft, dry cloth. Avoid direct sunlight and extreme temperatures 
+                  to preserve the finish and colors.
+                </p>
+              </div>
+
+              <div className="space-y-4 border-t border-border pt-8">
+                <h3 className="text-lg font-bold uppercase tracking-wider">MATERIAL & DIMENSIONS</h3>
+                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                  <li>Premium resin body with matte finish</li>
+                  <li>Metal base plate for stability</li>
+                  <li>High-quality paint and finishing</li>
+                  <li>Weight: Varies by piece</li>
+                  <li>Dimensions: See product specifications</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
