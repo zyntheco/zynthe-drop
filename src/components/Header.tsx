@@ -29,21 +29,14 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
               <SheetContent side="left" className="w-[300px]">
                 <nav className="flex flex-col gap-6 mt-8">
                   <Link
-                    to="/"
-                    className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    NEW
-                  </Link>
-                  <Link
-                    to="/"
+                    to="/shop"
                     className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     SHOP ALL
                   </Link>
                   <Link
-                    to="/"
+                    to="/about"
                     className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
                     onClick={() => setMobileMenuOpen(false)}
                   >
