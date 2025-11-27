@@ -1,43 +1,114 @@
 import { Link } from "react-router-dom";
+import logo from "@/assets/zynthe-logo.png";
 
 export const Footer = () => {
-  const links = [
-    { label: "SEARCH", href: "#" },
-    { label: "PRIVACY POLICY", href: "/privacy-policy" },
-    { label: "REFUND POLICY", href: "/refund-policy" },
-    { label: "TERMS OF SERVICE", href: "/terms-of-service" },
-  ];
-
   return (
-    <footer className="bg-background py-16">
+    <footer className="bg-primary py-12 md:py-16">
       <div className="container mx-auto px-4">
-        {/* Links */}
-        <div className="flex flex-col items-center space-y-3 mb-10">
-          {links.map((link) => (
-            link.href.startsWith("#") ? (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-sm text-muted-foreground uppercase tracking-wider hover:text-primary transition-colors duration-300"
+        {/* Desktop Layout */}
+        <div className="hidden md:grid md:grid-cols-2 gap-8 mb-12">
+          {/* Left: Brand Description */}
+          <div className="pr-8">
+            <p className="text-primary-foreground text-sm md:text-base leading-relaxed uppercase tracking-wide">
+              ZYNTHE IS A DESIGN STUDIO THAT CREATES AVANT-GARDE ART PIECES TO TRANSFORM YOUR LIVING SPACE INTO A GALLERY REFLECTING THE COURAGE AND ECCENTRICITY OF YOUR LIFE. WE BELIEVE IN EMPOWERING INDIVIDUALS TO CHALLENGE CONVENTION THROUGH UNIQUE, INDIVIDUALISTIC ART.
+            </p>
+          </div>
+
+          {/* Right: Logo and Social Links */}
+          <div className="flex flex-col items-end justify-between">
+            <div className="flex gap-8 mb-8">
+              <a 
+                href="mailto:info@zynthe.co" 
+                className="text-primary-foreground text-sm uppercase tracking-wider hover:opacity-70 transition-opacity"
               >
-                {link.label}
+                EMAIL
               </a>
-            ) : (
-              <Link
-                key={link.label}
-                to={link.href}
-                className="text-sm text-muted-foreground uppercase tracking-wider hover:text-primary transition-colors duration-300"
+              <a 
+                href="https://instagram.com/zynthe" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary-foreground text-sm uppercase tracking-wider hover:opacity-70 transition-opacity"
               >
-                {link.label}
-              </Link>
-            )
-          ))}
+                INSTAGRAM
+              </a>
+              <a 
+                href="https://facebook.com/zynthe" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary-foreground text-sm uppercase tracking-wider hover:opacity-70 transition-opacity"
+              >
+                FACEBOOK
+              </a>
+            </div>
+            <img src={logo} alt="ZYNTHE" className="h-32 w-auto" loading="lazy" />
+          </div>
         </div>
 
-        {/* Copyright */}
-        <p className="text-xs text-muted-foreground/40 text-center mt-6">
-          © 2025 ZYNTHE. ALL PIECES NUMBERED AND AUTHENTICATED.
-        </p>
+        {/* Mobile Layout */}
+        <div className="md:hidden space-y-8 mb-8">
+          <p className="text-primary-foreground text-xs leading-relaxed uppercase tracking-wide text-center">
+            ZYNTHE IS A DESIGN STUDIO THAT CREATES AVANT-GARDE ART PIECES TO TRANSFORM YOUR LIVING SPACE INTO A GALLERY REFLECTING THE COURAGE AND ECCENTRICITY OF YOUR LIFE.
+          </p>
+          
+          <div className="flex justify-center">
+            <img src={logo} alt="ZYNTHE" className="h-24 w-auto" loading="lazy" />
+          </div>
+          
+          <div className="flex flex-col items-center gap-4">
+            <a 
+              href="mailto:info@zynthe.co" 
+              className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
+            >
+              EMAIL
+            </a>
+            <a 
+              href="https://instagram.com/zynthe" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
+            >
+              INSTAGRAM
+            </a>
+            <a 
+              href="https://facebook.com/zynthe" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
+            >
+              FACEBOOK
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom Links and Copyright */}
+        <div className="border-t border-primary-foreground/20 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 md:gap-8">
+              <Link
+                to="/refund-policy"
+                className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
+              >
+                REFUND POLICY
+              </Link>
+              <Link
+                to="/terms-of-service"
+                className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
+              >
+                TERMS OF SERVICE
+              </Link>
+              <Link
+                to="/privacy-policy"
+                className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
+              >
+                PRIVACY POLICY
+              </Link>
+            </div>
+            
+            <p className="text-primary-foreground/60 text-xs uppercase tracking-wider">
+              © 2025 ALL RIGHTS RESERVED
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   );

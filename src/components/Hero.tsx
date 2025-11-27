@@ -3,7 +3,8 @@ import heroBg from "@/assets/hero-bg.png";
 export const Hero = () => {
   return (
     <section className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
-      {/* Background image with blending */}
+      {/* Background image with blending - preload for performance */}
+      <link rel="preload" as="image" href={heroBg} />
       <div 
         className="absolute inset-0 opacity-40"
         style={{
