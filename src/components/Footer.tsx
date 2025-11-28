@@ -10,7 +10,7 @@ export const Footer = () => {
           {/* Left: Brand Description */}
           <div className="pr-8">
             <p className="text-primary-foreground text-sm md:text-base leading-relaxed uppercase tracking-wide">
-              ZYNTHE IS A DESIGN STUDIO THAT CREATES AVANT-GARDE ART PIECES TO TRANSFORM YOUR LIVING SPACE INTO A GALLERY REFLECTING THE COURAGE AND ECCENTRICITY OF YOUR LIFE. WE BELIEVE IN EMPOWERING INDIVIDUALS TO CHALLENGE CONVENTION THROUGH UNIQUE, INDIVIDUALISTIC ART.
+              ZYNTHE CRAFTS BOUNDARY-PUSHING COLLECTIBLES THAT BLUR THE LINE BETWEEN ART AND DESIGN. EACH PIECE IS A STATEMENT OF REBELLION AGAINST THE ORDINARY, TRANSFORMING SPACES INTO SANCTUARIES OF BOLD EXPRESSION. WE CREATE FOR THOSE WHO REFUSE TO BLEND IN.
             </p>
           </div>
 
@@ -24,20 +24,12 @@ export const Footer = () => {
                 EMAIL
               </a>
               <a 
-                href="https://instagram.com/zynthe" 
+                href="https://www.instagram.com/zynthe.co/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-primary-foreground text-sm uppercase tracking-wider hover:opacity-70 transition-opacity"
               >
                 INSTAGRAM
-              </a>
-              <a 
-                href="https://facebook.com/zynthe" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-primary-foreground text-sm uppercase tracking-wider hover:opacity-70 transition-opacity"
-              >
-                FACEBOOK
               </a>
             </div>
             <img src={logo} alt="ZYNTHE" className="h-32 w-auto" loading="lazy" />
@@ -47,7 +39,7 @@ export const Footer = () => {
         {/* Mobile Layout */}
         <div className="md:hidden space-y-8 mb-8">
           <p className="text-primary-foreground text-xs leading-relaxed uppercase tracking-wide text-center">
-            ZYNTHE IS A DESIGN STUDIO THAT CREATES AVANT-GARDE ART PIECES TO TRANSFORM YOUR LIVING SPACE INTO A GALLERY REFLECTING THE COURAGE AND ECCENTRICITY OF YOUR LIFE.
+            ZYNTHE CRAFTS BOUNDARY-PUSHING COLLECTIBLES THAT BLUR THE LINE BETWEEN ART AND DESIGN. EACH PIECE IS A STATEMENT OF REBELLION AGAINST THE ORDINARY.
           </p>
           
           <div className="flex justify-center">
@@ -62,20 +54,12 @@ export const Footer = () => {
               EMAIL
             </a>
             <a 
-              href="https://instagram.com/zynthe" 
+              href="https://www.instagram.com/zynthe.co/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
             >
               INSTAGRAM
-            </a>
-            <a 
-              href="https://facebook.com/zynthe" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary-foreground text-xs uppercase tracking-wider hover:opacity-70 transition-opacity"
-            >
-              FACEBOOK
             </a>
           </div>
         </div>
