@@ -20,7 +20,7 @@ export const Cart = ({ isOpen, onClose, items, onUpdateQuantity, onRemoveItem }:
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="right" className="w-[75vw] sm:w-[440px] flex flex-col">
+      <SheetContent side="right" className="w-full sm:w-[440px] flex flex-col">
         <SheetHeader>
           <SheetTitle className="text-2xl font-bold tracking-wide">YOUR CART</SheetTitle>
         </SheetHeader>

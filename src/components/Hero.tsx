@@ -12,14 +12,14 @@ export const Hero = () => {
           backgroundSize: 'contain',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          transform: 'rotate(-30deg) scale(0.7)',
+          transform: 'scale(1.2)',
         }}
       >
         <style>
           {`
             @media (max-width: 768px) {
-              div[style*="rotate(-30deg)"] {
-                transform: rotate(-30deg) scale(1.3) !important;
+              div[style*="scale(1.2)"] {
+                transform: scale(1.3) !important;
               }
             }
           `}
