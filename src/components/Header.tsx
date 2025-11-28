@@ -28,8 +28,8 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
     <header className="border-b border-border">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Left: Mobile Menu */}
-          <div className="flex items-center gap-2">
+          {/* Left: Desktop Navigation & Mobile Menu */}
+          <div className="flex items-center gap-8">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden hover:text-primary">
@@ -46,15 +46,57 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
                     SHOP ALL
                   </Link>
                   <Link
+                    to="/archive"
+                    className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    ARCHIVE
+                  </Link>
+                  <Link
                     to="/about"
                     className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     ABOUT
                   </Link>
+                  <Link
+                    to="/contact"
+                    className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    CONTACT US
+                  </Link>
                 </nav>
               </SheetContent>
             </Sheet>
+            
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                to="/shop"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+              >
+                SHOP ALL
+              </Link>
+              <Link
+                to="/archive"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+              >
+                ARCHIVE
+              </Link>
+              <Link
+                to="/about"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+              >
+                ABOUT
+              </Link>
+              <Link
+                to="/contact"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+              >
+                CONTACT US
+              </Link>
+            </nav>
           </div>
 
           {/* Center: Logo */}
