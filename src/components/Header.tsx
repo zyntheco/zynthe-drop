@@ -59,7 +59,7 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
 
           {/* Center: Logo */}
           <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
-            <img src={logo} alt="ZYNTHE" className="h-16 w-auto" loading="eager" fetchPriority="high" />
+            <img src={logo} alt="ZYNTHE" className="h-24 w-auto" loading="eager" fetchPriority="high" />
           </Link>
 
           {/* Right: Action Buttons */}

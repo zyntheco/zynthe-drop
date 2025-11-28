@@ -1,75 +1,63 @@
-import heroBg from "@/assets/hero-bg.png";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   return (
-    <section className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
-      {/* Background image with blending - preload for performance */}
-      <link rel="preload" as="image" href={heroBg} />
+    <section className="relative w-full h-[85vh] overflow-hidden bg-gradient-to-br from-[#0a1628] via-[#0f2847] to-[#1a3a5c]">
+      {/* Animated gradient overlay */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 animate-pulse"></div>
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 h-full container mx-auto px-4 flex flex-col justify-center">
+        <div className="max-w-4xl">
+          {/* Main headline */}
+          <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-[#d4af37] leading-none tracking-tight mb-8 animate-fade-in">
+            LIMITED<br />
+            EDITION<br />
+            COLLECTIBLES
+          </h1>
+
+          {/* Subheadline */}
+          <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl tracking-wide">
+            Numbered, authenticated, never restocked. What no one has.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-4">
+            <Link to="/shop">
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-black font-bold px-8 py-6 text-lg tracking-wider transition-all hover:scale-105"
+              >
+                SHOP ALL
+              </Button>
+            </Link>
+            <Link to="/about">
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-2 border-white/30 text-white hover:bg-white/10 font-bold px-8 py-6 text-lg tracking-wider transition-all hover:scale-105"
+              >
+                EXPLORE NOW
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Decorative elements */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent"></div>
+      
+      {/* Subtle grid pattern */}
       <div 
-        className="absolute inset-0 opacity-40"
+        className="absolute inset-0 opacity-5"
         style={{
-          backgroundImage: `url(${heroBg})`,
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          transform: 'scale(1.2)',
+          backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)`,
+          backgroundSize: '50px 50px'
         }}
-      >
-        <style>
-          {`
-            @media (max-width: 768px) {
-              div[style*="scale(1.2)"] {
-                transform: scale(1.3) !important;
-              }
-            }
-          `}
-        </style>
-      </div>
-
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/50"></div>
-
-      {/* Lightning Animation */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.6 }}>
-        <defs>
-          <linearGradient id="lightningGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#00D9FF', stopOpacity: 0.9 }} />
-            <stop offset="100%" style={{ stopColor: '#00D9FF', stopOpacity: 0.3 }} />
-          </linearGradient>
-        </defs>
-        <path
-          className="animate-[flash_4s_ease-in-out_infinite]"
-          d="M 20% 10% L 22% 35% L 18% 35% L 25% 70%"
-          stroke="url(#lightningGradient)"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-        />
-        <path
-          className="animate-[flash_5s_ease-in-out_infinite_1s]"
-          d="M 75% 15% L 77% 40% L 73% 40% L 78% 65%"
-          stroke="url(#lightningGradient)"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-        />
-        <path
-          className="animate-[flash_6s_ease-in-out_infinite_2s]"
-          d="M 50% 5% L 52% 30% L 48% 30% L 53% 55%"
-          stroke="url(#lightningGradient)"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-        />
-      </svg>
-
-      {/* Hero Text Overlay */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-        <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-white text-center leading-tight tracking-tight">
-          quiet collectibles,<br />louder than words.
-        </h1>
-        <div className="w-[60px] h-[2px] bg-primary mt-6"></div>
-      </div>
+      />
     </section>
   );
 };
