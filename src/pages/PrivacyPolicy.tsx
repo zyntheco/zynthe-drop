@@ -4,10 +4,10 @@ import { TextCarousel } from "@/components/TextCarousel";
 
 const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
       <Header onCartOpen={() => {}} cartItemsCount={0} />
-      
+
       <main className="container mx-auto px-4 py-20 max-w-4xl">
         <h1 className="font-serif text-4xl md:text-5xl text-white text-center mb-12 uppercase tracking-wider">
           Privacy Policy

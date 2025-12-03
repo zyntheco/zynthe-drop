@@ -101,10 +101,10 @@ const Shop = () => {
     priceRange[0] !== 0 || priceRange[1] !== maxPrice;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
       <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItemsCount} />
-      
+
       <div className="container mx-auto px-4 pt-32 pb-12">
         <h1 className="font-serif text-4xl md:text-5xl text-primary mb-8 uppercase tracking-wide">
           All Products

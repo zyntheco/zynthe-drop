@@ -5,10 +5,10 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
       <Header />
-      
+
       <div className="container mx-auto px-4 pt-32 pb-16 max-w-4xl">
         <h1 className="font-serif text-5xl md:text-6xl text-primary mb-16 uppercase tracking-tight">
           About Zynthe

@@ -20,7 +20,7 @@ const ProductDetail = () => {
   
   if (!product) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background pt-16">
         <TextCarousel />
         <Header />
         <div className="container mx-auto px-4 py-24 text-center">
@@ -52,10 +52,10 @@ const ProductDetail = () => {
   const buttonConfig = getButtonConfig();
 
   return (
-    <div className="min-h-screen bg-background animate-fade-in">
+    <div className="min-h-screen bg-background pt-16 animate-fade-in">
       <TextCarousel />
       <Header />
-      
+
       <div className="container mx-auto px-4 py-12">
         <Button 
           variant="ghost" 

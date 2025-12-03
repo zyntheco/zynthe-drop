@@ -87,40 +87,39 @@ const Archive = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
       <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
-      
-      {/* Hero Section - matching site theme */}
-      <section className="relative pt-32 pb-16 px-4 bg-background overflow-hidden">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `linear-gradient(0deg, transparent 24%, hsl(var(--primary) / 0.1) 25%, hsl(var(--primary) / 0.1) 26%, transparent 27%, transparent 74%, hsl(var(--primary) / 0.1) 75%, hsl(var(--primary) / 0.1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, hsl(var(--primary) / 0.1) 25%, hsl(var(--primary) / 0.1) 26%, transparent 27%, transparent 74%, hsl(var(--primary) / 0.1) 75%, hsl(var(--primary) / 0.1) 76%, transparent 77%, transparent)`,
-              backgroundSize: "50px 50px",
-            }}
-          />
-        </div>
-        
-        <div className="container mx-auto relative z-10">
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-primary mb-6 tracking-tight">
+
+      {/* Hero Section - Premium cinematic style */}
+      <section className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
+        {/* Gradient background matching hero */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 via-pink-800/70 to-purple-800/80"></div>
+
+        {/* Subtle texture overlay */}
+        <div
+          className="absolute inset-0 opacity-30 mix-blend-overlay"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+            backgroundSize: '30px 30px'
+          }}
+        ></div>
+
+        {/* Hero Text */}
+        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-white text-center leading-tight tracking-tight">
             THE ARCHIVE
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl tracking-wide">
-            Explore our past collections. These pieces have found their homes and will never be restocked. 
-            Each was a limited edition, numbered and authenticated.
-          </p>
+          <div className="w-[60px] h-[2px] bg-primary mt-6"></div>
         </div>
-        
-        {/* Gradient fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       {/* Products Grid */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
+      <section className="py-24 px-4 relative">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none"></div>
+
+        <div className="container mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {archiveProducts.map((product, index) => (
               <div
