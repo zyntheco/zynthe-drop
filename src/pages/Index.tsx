@@ -53,7 +53,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <TextCarousel />
       <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
       <Hero />
       <CategoryHeader />

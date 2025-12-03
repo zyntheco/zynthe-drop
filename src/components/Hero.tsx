@@ -1,171 +1,199 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const slides = [
-  {
-    id: 1,
-    title: "LIMITED\nEDITION\nCOLLECTIBLES",
-    subtitle: "Numbered, authenticated, never restocked. What no one has.",
-    cta1: { text: "SHOP ALL", link: "/shop" },
-    cta2: { text: "EXPLORE NOW", link: "/about" },
-    gradient: "from-[#0a1628] via-[#0f2847] to-[#1a3a5c]",
-  },
-  {
-    id: 2,
-    title: "AVANT-GARDE\nART\nPIECES",
-    subtitle: "Transform your living space into a gallery reflecting your courage.",
-    cta1: { text: "VIEW COLLECTION", link: "/shop" },
-    cta2: { text: "LEARN MORE", link: "/about" },
-    gradient: "from-[#1a0a28] via-[#2a1847] to-[#3a285c]",
-  },
-  {
-    id: 3,
-    title: "PAST\nCOLLECTIONS\nARCHIVE",
-    subtitle: "Explore sold-out masterpieces and exclusive past editions.",
-    cta1: { text: "BROWSE ARCHIVE", link: "/archive" },
-    cta2: { text: "CONTACT US", link: "/contact" },
-    gradient: "from-[#0a2818] via-[#0f4737] to-[#1a5c4c]",
-  },
-];
 
 export const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showSmoke, setShowSmoke] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    // Trigger animations after component mounts
+    const loadTimer = setTimeout(() => setIsLoaded(true), 100);
+    const smokeTimer = setTimeout(() => setShowSmoke(true), 800);
+    
+    return () => {
+      clearTimeout(loadTimer);
+      clearTimeout(smokeTimer);
+    };
+  }, []);
 
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000);
+  // Smoke pulse effect synced with "engine revs"
+  useEffect(() => {
+    if (!showSmoke) return;
+    
+    const pulseInterval = setInterval(() => {
+      setShowSmoke(false);
+      setTimeout(() => setShowSmoke(true), 200);
+    }, 3000);
 
-    return () => clearInterval(interval);
-  }, [isAutoPlaying]);
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 8000);
-  };
-
-  const nextSlide = () => {
-    goToSlide((currentSlide + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    goToSlide((currentSlide - 1 + slides.length) % slides.length);
-  };
+    return () => clearInterval(pulseInterval);
+  }, [showSmoke]);
 
   return (
-    <section className="relative w-full h-[85vh] overflow-hidden">
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-            index === currentSlide
-              ? "opacity-100 translate-x-0"
-              : index < currentSlide
-              ? "opacity-0 -translate-x-full"
-              : "opacity-0 translate-x-full"
+    <section className="relative w-full h-screen overflow-hidden">
+      {/* Video Background */}
+      <div className="absolute inset-0">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: "brightness(0.7) contrast(1.1)" }}
+        >
+          <source src="/videos/hero-bg.mov" type="video/mp4" />
+        </video>
+        
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+        
+        {/* Blue/White neon edge glow */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-primary/20 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background to-transparent" />
+        </div>
+      </div>
+
+      {/* Smoke/Fog Effect Overlay */}
+      <div 
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${
+          showSmoke ? "opacity-40" : "opacity-0"
+        }`}
+      >
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-[60%] bg-gradient-to-t from-white/10 via-white/5 to-transparent"
+          style={{
+            animation: "smokeRise 4s ease-in-out infinite",
+          }}
+        />
+      </div>
+
+      {/* Heat distortion effect */}
+      <div 
+        className="absolute bottom-0 left-1/4 right-1/4 h-48 opacity-20 pointer-events-none"
+        style={{
+          background: "linear-gradient(to top, hsl(var(--primary) / 0.3), transparent)",
+          filter: "blur(20px)",
+          animation: "heatWave 2s ease-in-out infinite",
+        }}
+      />
+
+      {/* Main Content */}
+      <div className="relative z-10 h-full container mx-auto px-4 flex flex-col justify-center items-center text-center">
+        {/* 3D Z Logo - Large and Dominant */}
+        <div 
+          className={`mb-8 transition-all duration-1000 ${
+            isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-50"
           }`}
         >
-          {/* Background with parallax effect */}
-          <div
-            className={`absolute inset-0 bg-gradient-to-br ${slide.gradient}`}
+          <div 
+            className="relative"
             style={{
-              transform: index === currentSlide ? "scale(1.05)" : "scale(1)",
-              transition: "transform 4s ease-out",
+              animation: isLoaded ? "logoSpin 20s linear infinite" : "none",
+              transformStyle: "preserve-3d",
             }}
           >
-            {/* Animated gradient overlay */}
-            <div className="absolute inset-0 opacity-30">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 animate-pulse"></div>
-            </div>
-
-            {/* Subtle grid pattern */}
-            <div
-              className="absolute inset-0 opacity-5"
+            {/* Z Logo with chrome effect */}
+            <span 
+              className="text-[180px] md:text-[250px] lg:text-[300px] font-black leading-none select-none"
               style={{
-                backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)`,
-                backgroundSize: "50px 50px",
+                background: "linear-gradient(135deg, #e8e8e8 0%, #ffffff 25%, #a8a8a8 50%, #ffffff 75%, #d8d8d8 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                filter: "drop-shadow(0 0 40px hsl(var(--primary) / 0.5)) drop-shadow(0 20px 60px rgba(0,0,0,0.5))",
+                textShadow: "0 0 80px hsl(var(--primary) / 0.3)",
+              }}
+            >
+              Z
+            </span>
+            
+            {/* Glow from below (engine light) */}
+            <div 
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-48 h-24 rounded-full"
+              style={{
+                background: "radial-gradient(ellipse, hsl(var(--primary) / 0.6), transparent)",
+                filter: "blur(20px)",
+                animation: "engineGlow 1.5s ease-in-out infinite",
               }}
             />
           </div>
-
-          {/* Content */}
-          <div className="relative z-10 h-full container mx-auto px-4 flex flex-col justify-center">
-            <div className="max-w-4xl">
-              {/* Main headline */}
-              <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-[#d4af37] leading-none tracking-tight mb-8 whitespace-pre-line animate-fade-in">
-                {slide.title}
-              </h1>
-
-              {/* Subheadline */}
-              <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl tracking-wide">
-                {slide.subtitle}
-              </p>
-
-              {/* CTAs */}
-              <div className="flex flex-wrap gap-4">
-                <Link to={slide.cta1.link}>
-                  <Button
-                    size="lg"
-                    className="bg-primary hover:bg-primary/90 text-black font-bold px-8 py-6 text-lg tracking-wider transition-all hover:scale-105"
-                  >
-                    {slide.cta1.text}
-                  </Button>
-                </Link>
-                <Link to={slide.cta2.link}>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-2 border-white/30 text-white hover:bg-white/10 font-bold px-8 py-6 text-lg tracking-wider transition-all hover:scale-105"
-                  >
-                    {slide.cta2.text}
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Decorative gradient at bottom */}
-          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent"></div>
         </div>
-      ))}
 
-      {/* Navigation Arrows */}
-      <button
-        onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all hover:scale-110"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all hover:scale-110"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
+        {/* Headline */}
+        <h1 
+          className={`font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6 tracking-tight transition-all duration-1000 delay-300 ${
+            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          PERFORMANCE <span className="text-primary">BRED</span>
+          <br />
+          <span className="text-white/80">VISCERAL LUXURY</span>
+        </h1>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all ${
-              index === currentSlide
-                ? "bg-primary w-8"
-                : "bg-white/30 hover:bg-white/50"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
+        {/* Subheadline */}
+        <p 
+          className={`text-lg md:text-xl text-white/70 mb-10 max-w-xl tracking-wide transition-all duration-1000 delay-500 ${
+            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          Limited edition collectibles. Numbered, authenticated, never restocked.
+        </p>
+
+        {/* CTAs */}
+        <div 
+          className={`flex flex-wrap gap-4 justify-center transition-all duration-1000 delay-700 ${
+            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <Link to="/shop">
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-10 py-6 text-lg tracking-wider transition-all hover:scale-105 hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)]"
+            >
+              SHOP NOW
+            </Button>
+          </Link>
+          <Link to="/about">
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white font-bold px-10 py-6 text-lg tracking-wider transition-all hover:scale-105 backdrop-blur-sm"
+            >
+              EXPLORE
+            </Button>
+          </Link>
+        </div>
       </div>
+
+      {/* Bottom gradient fade to content */}
+      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
+
+      {/* Custom Animations */}
+      <style>{`
+        @keyframes logoSpin {
+          0% { transform: rotateY(0deg); }
+          100% { transform: rotateY(360deg); }
+        }
+        
+        @keyframes engineGlow {
+          0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+          50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+        
+        @keyframes smokeRise {
+          0% { transform: translateY(20px); opacity: 0.3; }
+          50% { transform: translateY(-20px); opacity: 0.5; }
+          100% { transform: translateY(20px); opacity: 0.3; }
+        }
+        
+        @keyframes heatWave {
+          0%, 100% { transform: scaleY(1) translateY(0); }
+          50% { transform: scaleY(1.1) translateY(-10px); }
+        }
+      `}</style>
     </section>
   );
 };
