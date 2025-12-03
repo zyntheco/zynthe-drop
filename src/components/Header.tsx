@@ -5,7 +5,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
 import logo from "@/assets/zynthe-logo.png";
 import { products } from "@/components/ProductCarousel";
-import type { Product } from "@/components/ProductCard";
 
 type HeaderProps = {
   onCartOpen?: () => void;
@@ -25,14 +24,14 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
     : [];
 
   return (
-    <header className="border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Left: Desktop Navigation & Mobile Menu */}
           <div className="flex items-center gap-8">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden hover:text-primary">
+                <Button variant="ghost" size="icon" className="md:hidden hover:text-primary text-white">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -74,25 +73,25 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
             <nav className="hidden md:flex items-center gap-6">
               <Link
                 to="/shop"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
               >
                 SHOP ALL
               </Link>
               <Link
                 to="/archive"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
               >
                 ARCHIVE
               </Link>
               <Link
                 to="/about"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
               >
                 ABOUT
               </Link>
               <Link
                 to="/contact"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium"
+                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
               >
                 CONTACT US
               </Link>
@@ -101,7 +100,7 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
 
           {/* Center: Logo */}
           <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
-            <img src={logo} alt="ZYNTHE" className="h-24 w-auto" loading="eager" fetchPriority="high" />
+            <img src={logo} alt="ZYNTHE" className="h-24 w-auto drop-shadow-lg" loading="eager" fetchPriority="high" />
           </Link>
 
           {/* Right: Action Buttons */}
@@ -109,7 +108,7 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
             <Button
               variant="ghost"
               size="icon"
-              className="hover:text-primary"
+              className="hover:text-primary text-white"
               onClick={() => setSearchOpen(!searchOpen)}
               title="Search"
             >
@@ -118,13 +117,13 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
             <Button
               variant="ghost"
               size="icon"
-              className="hover:text-primary relative"
+              className="hover:text-primary relative text-white"
               onClick={onCartOpen}
               title="Shopping Bag"
             >
               <ShoppingBag className="h-5 w-5" />
               {cartItemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-black text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {cartItemsCount}
                 </span>
               )}
@@ -141,7 +140,7 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-secondary/50 border border-border px-4 py-3 pr-10 rounded-none focus:outline-none focus:border-primary transition-colors"
+                className="w-full bg-background/80 backdrop-blur-md border border-border px-4 py-3 pr-10 rounded-none focus:outline-none focus:border-primary transition-colors text-foreground"
                 autoFocus
               />
               {searchQuery && (
