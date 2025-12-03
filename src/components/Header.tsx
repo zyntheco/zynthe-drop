@@ -191,6 +191,9 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
           </div>
         )}
       </div>
+      
+      {/* Subtle white line at bottom of header */}
+      <div className="w-full h-[1px] bg-white/20" />
     </header>
   );
 };

@@ -3,6 +3,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Cart, type CartItem } from "@/components/Cart";
 import { ProductCard, type Product } from "@/components/ProductCard";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { TextCarousel } from "@/components/TextCarousel";
 
 // Archive products - sold out items
 const archiveProducts: Product[] = [
@@ -86,41 +88,46 @@ const Archive = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <TextCarousel />
       <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
       
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-br from-[#0a1628] via-[#0f2847] to-[#1a3a5c] overflow-hidden">
+      {/* Hero Section - matching site theme */}
+      <section className="relative pt-32 pb-16 px-4 bg-background overflow-hidden">
+        {/* Subtle grid pattern */}
         <div className="absolute inset-0 opacity-5">
           <div
             className="absolute inset-0"
             style={{
-              backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)`,
+              backgroundImage: `linear-gradient(0deg, transparent 24%, hsl(var(--primary) / 0.1) 25%, hsl(var(--primary) / 0.1) 26%, transparent 27%, transparent 74%, hsl(var(--primary) / 0.1) 75%, hsl(var(--primary) / 0.1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, hsl(var(--primary) / 0.1) 25%, hsl(var(--primary) / 0.1) 26%, transparent 27%, transparent 74%, hsl(var(--primary) / 0.1) 75%, hsl(var(--primary) / 0.1) 76%, transparent 77%, transparent)`,
               backgroundSize: "50px 50px",
             }}
           />
         </div>
         
         <div className="container mx-auto relative z-10">
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-[#d4af37] mb-6 tracking-tight">
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-primary mb-6 tracking-tight">
             THE ARCHIVE
           </h1>
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl tracking-wide">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl tracking-wide">
             Explore our past collections. These pieces have found their homes and will never be restocked. 
             Each was a limited edition, numbered and authenticated.
           </p>
         </div>
+        
+        {/* Gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       {/* Products Grid */}
       <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {archiveProducts.map((product) => (
+            {archiveProducts.map((product, index) => (
               <div
                 key={product.id}
                 className="opacity-0 animate-fade-in"
                 style={{
-                  animationDelay: `${archiveProducts.indexOf(product) * 100}ms`,
+                  animationDelay: `${index * 100}ms`,
                   animationFillMode: "forwards",
                 }}
               >
@@ -132,6 +139,7 @@ const Archive = () => {
       </section>
 
       <Footer />
+      <ScrollToTop />
       <Cart
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}

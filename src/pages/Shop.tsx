@@ -105,8 +105,8 @@ const Shop = () => {
       <TextCarousel />
       <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItemsCount} />
       
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="font-serif text-4xl md:text-5xl text-center mb-8 uppercase tracking-wide">
+      <div className="container mx-auto px-4 pt-32 pb-12">
+        <h1 className="font-serif text-4xl md:text-5xl text-primary mb-8 uppercase tracking-wide">
           All Products
         </h1>
         
@@ -116,7 +116,7 @@ const Shop = () => {
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Category Filter */}
               <div className="flex-1">
-                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider">Category</h3>
+                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Category</h3>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <Button
@@ -134,7 +134,7 @@ const Shop = () => {
 
               {/* Status Filter */}
               <div className="flex-1">
-                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider">Status</h3>
+                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Status</h3>
                 <div className="flex flex-wrap gap-2">
                   {statuses.map((status) => (
                     <Button
@@ -152,7 +152,7 @@ const Shop = () => {
 
               {/* Price Range Filter */}
               <div className="flex-1">
-                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider">
+                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">
                   Price Range: ₹{priceRange[0].toLocaleString()} - ₹{priceRange[1].toLocaleString()}
                 </h3>
                 <Slider
