@@ -191,16 +191,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-6 h-6 text-primary mt-1" />
-                  <div>
-                    <h3 className="font-bold text-lg mb-1 text-foreground">Studio</h3>
-                    <p className="text-muted-foreground">
-                      By appointment only<br />
-                      Contact us to schedule a visit
-                    </p>
-                  </div>
-                </div>
+                {/* Studio block removed as requested */}
               </div>
 
               <div className="mt-12 p-6 bg-card border border-border">

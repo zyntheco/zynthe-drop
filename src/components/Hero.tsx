@@ -1,72 +1,101 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import heroBg from "@/assets/hero-neon.png";
+
+const slides = [
+  {
+    id: 1,
+    title: "quiet collectibles",
+    subtitle: "which tell a story.",
+    image: heroBg,
+  },
+];
 
 export const Hero = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [api, setApi] = useState<CarouselApi | undefined>();
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const loadTimer = setTimeout(() => setIsLoaded(true), 100);
-    return () => clearTimeout(loadTimer);
-  }, []);
+    if (!api) return;
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 5000);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+
+    return () => clearInterval(interval);
+  }, [api]);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden">
-      {/* Video Background */}
-      <div className="absolute inset-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ filter: "brightness(0.7) contrast(1.1)" }}
-        >
-          <source src="/videos/hero-bg.mov" type="video/mp4" />
-        </video>
-        
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
-        
-        {/* Primary color edge glow */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-primary/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background to-transparent" />
-        </div>
-      </div>
+    <section className="relative w-full min-h-[80vh] md:min-h-[90vh] overflow-hidden bg-background pt-32 md:pt-40">
+      <Carousel
+        setApi={setApi}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="h-full"
+      >
+        <CarouselContent className="h-full">
+          {slides.map((slide) => (
+            <CarouselItem key={slide.id} className="h-full flex items-stretch">
+              <div className="relative flex-1 flex items-center justify-center">
+                {/* Background image */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-40"
+                  style={{ backgroundImage: `url(${slide.image})` }}
+                />
 
-      {/* Main Content - CTAs Only */}
-      <div className="relative z-10 h-full container mx-auto px-4 flex flex-col justify-end items-center text-center pb-32">
-        {/* CTAs */}
-        <div 
-          className={`flex flex-wrap gap-4 justify-center transition-all duration-1000 delay-300 ${
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <Link to="/shop">
-            <Button
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-10 py-6 text-lg tracking-wider transition-all hover:scale-105 hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)]"
-            >
-              SHOP NOW
-            </Button>
-          </Link>
-          <Link to="/about">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white font-bold px-10 py-6 text-lg tracking-wider transition-all hover:scale-105 backdrop-blur-sm"
-            >
-              EXPLORE
-            </Button>
-          </Link>
-        </div>
-      </div>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-background" />
 
-      {/* Bottom gradient fade to content */}
-      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
+                {/* Content */}
+                <div className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center text-center gap-10 py-20">
+                  <div className="max-w-3xl mx-auto">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-4">
+                      {slide.title}
+                      <br />
+                      {slide.subtitle}
+                    </h1>
+                  </div>
+
+                  <div className="flex flex-wrap gap-4 justify-center">
+                    <Link to="/shop">
+                      <Button className="px-10 py-6 text-sm md:text-base font-semibold tracking-[0.25em] rounded-full">
+                        SHOP CURRENT DROP
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
+      {/* Dots Indicator */}
+      <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-2 z-20">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => api?.scrollTo(index)}
+            className={`h-2 rounded-full transition-all ${
+              current === index ? "w-10 bg-primary" : "w-3 bg-muted-foreground/40"
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
     </section>
   );
 };

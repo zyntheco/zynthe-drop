@@ -91,26 +91,24 @@ const Archive = () => {
       <TextCarousel />
       <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
 
-      {/* Hero Section - Premium cinematic style */}
-      <section className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
-        {/* Gradient background matching hero */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 via-pink-800/70 to-purple-800/80"></div>
+      {/* Hero Section - aligned with main hero styling */}
+      <section className="relative w-full min-h-[50vh] md:min-h-[60vh] overflow-hidden bg-background pt-24 md:pt-28">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-background/60 to-background" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background via-background/70 to-transparent pointer-events-none" />
 
-        {/* Subtle texture overlay */}
-        <div
-          className="absolute inset-0 opacity-30 mix-blend-overlay"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-            backgroundSize: '30px 30px'
-          }}
-        ></div>
-
-        {/* Hero Text */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-white text-center leading-tight tracking-tight">
-            THE ARCHIVE
-          </h1>
-          <div className="w-[60px] h-[2px] bg-primary mt-6"></div>
+        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center gap-8">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-xs md:text-sm tracking-[0.35em] uppercase text-white/60 mb-4">
+              ZYNTHE ARCHIVE
+            </p>
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-tight tracking-tight mb-4">
+              Past drops, never repeated.
+            </h1>
+            <p className="text-sm md:text-base text-white/70 max-w-xl mx-auto">
+              A record of every limited edition piece we’ve released. Once a piece
+              enters the archive, it’s gone for good.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -120,6 +118,15 @@ const Archive = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none"></div>
 
         <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
+              Archived Editions
+            </h2>
+            <p className="text-muted-foreground">
+              Sold out. Documented here for collectors and future provenance.
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {archiveProducts.map((product, index) => (
               <div

@@ -24,7 +24,7 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
     : [];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+    <header className="fixed top-8 left-0 right-0 z-50 bg-gradient-to-b from-background/80 via-background/60 to-background/0 backdrop-blur-xl">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Left: Desktop Navigation & Mobile Menu */}
@@ -193,7 +193,7 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
       </div>
       
       {/* Subtle white line at bottom of header */}
-      <div className="w-full h-[1px] bg-white/20" />
+      <div className="mx-4 h-px bg-white/15" />
     </header>
   );
 };

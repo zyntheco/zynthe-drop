@@ -4,18 +4,22 @@ import { Button } from "./ui/button";
 
 export const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 400) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+      setScrollProgress(progress);
+      setIsVisible(scrollTop > 400);
     };
 
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
@@ -31,14 +35,25 @@ export const ScrollToTop = () => {
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16 pointer-events-none"
       }`}
     >
-      <Button
-        onClick={scrollToTop}
-        size="icon"
-        className="h-12 w-12 rounded-full shadow-lg hover:shadow-xl transition-shadow bg-primary hover:bg-primary/90"
-        aria-label="Scroll to top"
+      <div
+        className="relative h-14 w-14 flex items-center justify-center rounded-full bg-background/80 backdrop-blur-md border border-border/80 shadow-lg"
+        aria-hidden="true"
       >
-        <ArrowUp className="h-5 w-5" />
-      </Button>
+        <div
+          className="absolute inset-[2px] rounded-full"
+          style={{
+            background: `conic-gradient(hsl(var(--primary)) ${scrollProgress}%, transparent ${scrollProgress}%)`,
+          }}
+        />
+        <Button
+          onClick={scrollToTop}
+          size="icon"
+          className="relative h-10 w-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+          aria-label="Back to top"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 };

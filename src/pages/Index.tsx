@@ -10,6 +10,7 @@ import { Footer } from "@/components/Footer";
 import { Cart, type CartItem } from "@/components/Cart";
 import type { Product } from "@/components/ProductCard";
 import { toast } from "@/hooks/use-toast";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const Index = () => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -61,6 +62,7 @@ const Index = () => {
       <Manifesto />
       <EmailCapture />
       <Footer />
+      <ScrollToTop />
       <Cart
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}

@@ -6,6 +6,7 @@ import { ProductCard, type Product } from "@/components/ProductCard";
 import { Cart, type CartItem } from "@/components/Cart";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { products } from "@/components/ProductCarousel";
+import { ProductModal } from "@/components/ProductModal";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,10 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { TextCarousel } from "@/components/TextCarousel";
 import { products } from "@/components/ProductCarousel";
+import { Cart, type CartItem } from "@/components/Cart";
+import type { Product } from "@/components/ProductCard";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,6 +41,40 @@ const ProductDetail = () => {
     "SOLD OUT": "bg-sold-out text-destructive-foreground",
     "COMING SOON": "bg-coming-soon text-foreground",
   };
+
+  const handleAddToCart = (productToAdd: Product) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === productToAdd.id);
+
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item.id === productToAdd.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      }
+
+      return [...prevItems, { ...productToAdd, quantity: 1 }];
+    });
+
+    setCartOpen(true);
+  };
+
+  const handleUpdateQuantity = (productId: string, quantity: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === productId ? { ...item, quantity } : item,
+      ),
+    );
+  };
+
+  const handleRemoveItem = (productId: string) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.id !== productId),
+    );
+  };
+
+  const canPurchase = product.status === "LIVE";
 
   const getButtonConfig = () => {
     switch (product.status) {
@@ -96,12 +134,15 @@ const ProductDetail = () => {
                 className="w-full tracking-wider text-sm py-6"
                 variant={buttonConfig.variant}
                 disabled={buttonConfig.disabled}
+                onClick={() => canPurchase && handleAddToCart(product)}
               >
                 {buttonConfig.text}
               </Button>
               <Button 
                 className="w-full tracking-wider text-sm py-6"
                 variant="outline"
+                disabled={!canPurchase}
+                onClick={() => canPurchase && handleAddToCart(product)}
               >
                 BUY IT NOW
               </Button>
@@ -156,6 +197,14 @@ const ProductDetail = () => {
         </div>
       </div>
       
+      <Cart
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        items={cartItems}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+      />
+
       <Footer />
     </div>
   );

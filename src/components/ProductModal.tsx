@@ -7,9 +7,10 @@ type ProductModalProps = {
   product: Product;
   isOpen: boolean;
   onClose: () => void;
+  onAddToCart?: (product: Product) => void;
 };
 
-export const ProductModal = ({ product, isOpen, onClose }: ProductModalProps) => {
+export const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalProps) => {
   if (!isOpen) return null;
 
   const statusColors = {
@@ -63,6 +64,7 @@ export const ProductModal = ({ product, isOpen, onClose }: ProductModalProps) =>
               className="w-full tracking-wider text-sm py-6"
               variant={buttonConfig.variant}
               disabled={buttonConfig.disabled}
+              onClick={() => onAddToCart && !buttonConfig.disabled && onAddToCart(product)}
             >
               {buttonConfig.text}
             </Button>
