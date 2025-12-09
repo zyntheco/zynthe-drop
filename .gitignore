@@ -23,3 +23,15 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Local media artifacts (keep root-level drops out of git)
+/*.mov
+/*.mp4
+/*.jpeg
+/*.jpg
+/*.heic
+/*.stl
+/LOGOS.png
+/LOGOS (1).png
+/WhatsApp Image *.jpeg
+/*NOV.png
