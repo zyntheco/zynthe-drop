@@ -3,8 +3,8 @@ import { ProductCard, type Product } from "./ProductCard";
 export const products: Product[] = [
   {
     id: "1",
-    name: "ZYNTH FIGURE 01",
-    category: "Collectible Doll",
+    name: "SPOOKY CONTROLLER STAND",
+    category: "Gaming Sculpture",
     price: 34000,
     edition: "025/100",
     status: "LIVE",
@@ -23,7 +23,7 @@ export const products: Product[] = [
   },
   {
     id: "3",
-    name: "BEAR CONTROLLER THRONE",
+    name: "ROPE CONTROLLER STAND",
     category: "Gaming Sculpture",
     price: 22000,
     edition: "042/075",
@@ -33,12 +33,22 @@ export const products: Product[] = [
   },
   {
     id: "4",
-    name: "MONOLITH RUG 01",
+    name: "JÄGERMEISTER RUG",
     category: "Textile Art",
     price: 68000,
     edition: "008/025",
     status: "COMING SOON",
     image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&h=800&fit=crop",
+    colors: 3,
+  },
+  {
+    id: "5",
+    name: "F1 RUG",
+    category: "Textile Art",
+    price: 75000,
+    edition: "001/050",
+    status: "LIVE",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
     colors: 3,
   },
 ];

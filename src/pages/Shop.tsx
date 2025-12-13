@@ -9,7 +9,8 @@ import { products } from "@/components/ProductCarousel";
 import { ProductModal } from "@/components/ProductModal";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const Shop = () => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -19,11 +20,12 @@ const Shop = () => {
   // Filter states
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<number[]>([0, 100000]);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   
   const categories = Array.from(new Set(products.map(p => p.category)));
   const statuses = Array.from(new Set(products.map(p => p.status)));
   const maxPrice = Math.max(...products.map(p => p.price));
+  const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -113,75 +115,94 @@ const Shop = () => {
         
         {/* Filter Section */}
         <div className="max-w-7xl mx-auto mb-8">
-          <div className="bg-card border border-border rounded-lg p-6">
-            <div className="flex flex-col lg:flex-row gap-6">
-              {/* Category Filter */}
-              <div className="flex-1">
-                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Category</h3>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
+          <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-between py-4 px-6 bg-card border border-border rounded-lg"
+              >
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal className="h-4 w-4" />
+                  <span className="font-medium text-sm uppercase tracking-wider">
+                    Filters {hasActiveFilters && `(${selectedCategories.length + selectedStatuses.length + (priceRange[0] !== 0 || priceRange[1] !== maxPrice ? 1 : 0)} active)`}
+                  </span>
+                </div>
+                {filtersOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent className="mt-2">
+              <div className="bg-card border border-border rounded-lg p-6">
+                <div className="flex flex-col lg:flex-row gap-6">
+                  {/* Category Filter */}
+                  <div className="flex-1">
+                    <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Category</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {categories.map((category) => (
+                        <Button
+                          key={category}
+                          variant={selectedCategories.includes(category) ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => toggleCategory(category)}
+                          className="text-xs"
+                        >
+                          {category}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Status Filter */}
+                  <div className="flex-1">
+                    <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Status</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {statuses.map((status) => (
+                        <Button
+                          key={status}
+                          variant={selectedStatuses.includes(status) ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => toggleStatus(status)}
+                          className="text-xs"
+                        >
+                          {status}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Price Range Filter */}
+                  <div className="flex-1">
+                    <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">
+                      Price Range: ₹{priceRange[0].toLocaleString()} - ₹{priceRange[1].toLocaleString()}
+                    </h3>
+                    <Slider
+                      min={0}
+                      max={maxPrice}
+                      step={1000}
+                      value={priceRange}
+                      onValueChange={setPriceRange}
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
+
+                {/* Clear Filters */}
+                {hasActiveFilters && (
+                  <div className="mt-4 flex justify-end">
                     <Button
-                      key={category}
-                      variant={selectedCategories.includes(category) ? "default" : "outline"}
+                      variant="ghost"
                       size="sm"
-                      onClick={() => toggleCategory(category)}
+                      onClick={clearFilters}
                       className="text-xs"
                     >
-                      {category}
+                      <X className="h-3 w-3 mr-1" />
+                      Clear Filters
                     </Button>
-                  ))}
-                </div>
+                  </div>
+                )}
               </div>
-
-              {/* Status Filter */}
-              <div className="flex-1">
-                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Status</h3>
-                <div className="flex flex-wrap gap-2">
-                  {statuses.map((status) => (
-                    <Button
-                      key={status}
-                      variant={selectedStatuses.includes(status) ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => toggleStatus(status)}
-                      className="text-xs"
-                    >
-                      {status}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Price Range Filter */}
-              <div className="flex-1">
-                <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">
-                  Price Range: ₹{priceRange[0].toLocaleString()} - ₹{priceRange[1].toLocaleString()}
-                </h3>
-                <Slider
-                  min={0}
-                  max={maxPrice}
-                  step={1000}
-                  value={priceRange}
-                  onValueChange={setPriceRange}
-                  className="mt-2"
-                />
-              </div>
-            </div>
-
-            {/* Clear Filters */}
-            {hasActiveFilters && (
-              <div className="mt-4 flex justify-end">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearFilters}
-                  className="text-xs"
-                >
-                  <X className="h-3 w-3 mr-1" />
-                  Clear Filters
-                </Button>
-              </div>
-            )}
-          </div>
+            </CollapsibleContent>
+          </Collapsible>
 
           {/* Results Count */}
           <div className="mt-4 text-center text-sm text-muted-foreground">

@@ -55,23 +55,26 @@ const Contact = () => {
       <TextCarousel />
       <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
 
-      {/* Hero Section - Premium cinematic style */}
-      <section className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
-        {/* Gradient background matching hero */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 via-pink-800/70 to-purple-800/80"></div>
+      {/* Hero Section - Dark cinematic style matching site theme */}
+      <section className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden pt-16">
+        {/* Dark gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
+        
+        {/* Subtle cyan glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
 
-        {/* Subtle texture overlay */}
+        {/* Grid texture overlay */}
         <div
-          className="absolute inset-0 opacity-30 mix-blend-overlay"
+          className="absolute inset-0 opacity-10"
           style={{
-            backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-            backgroundSize: '30px 30px'
+            backgroundImage: 'linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px)',
+            backgroundSize: '50px 50px'
           }}
         ></div>
 
         {/* Hero Text */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-white text-center leading-tight tracking-tight">
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-primary text-center leading-tight tracking-tight">
             GET IN TOUCH
           </h1>
           <div className="w-[60px] h-[2px] bg-primary mt-6"></div>
