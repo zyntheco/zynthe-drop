@@ -19,23 +19,6 @@ type ProductCardProps = {
   onAddToCart?: (product: Product) => void;
 };
 
-const ColorDots = ({ count }: { count: number }) => {
-  return (
-    <div className="flex justify-center gap-2">
-      {Array.from({ length: count }).map((_, i) => (
-        <button
-          key={i}
-          className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
-            i === 2 
-              ? 'bg-black ring-2 ring-primary' 
-              : 'bg-muted-foreground/40 hover:bg-muted-foreground/60'
-          }`}
-          aria-label={`Color variant ${i + 1}`}
-        />
-      ))}
-    </div>
-  );
-};
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const statusColors = {
@@ -88,8 +71,6 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           ₹{product.price.toLocaleString()}
         </p>
 
-        {/* Color Variant Dots */}
-        <ColorDots count={product.colors} />
       </div>
     </Link>
   );
