@@ -70,17 +70,6 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           {product.edition}
         </div>
 
-        {/* Add to Cart Button (Bottom Right) */}
-        {product.status === "LIVE" && (
-          <Button
-            onClick={handleAddToCart}
-            size="icon"
-            className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white hover:bg-primary hover:text-black transition-all duration-200 rounded-md h-auto w-auto p-1.5"
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        )}
-
         {/* Status Badge (Top Right) */}
         <Badge className={`absolute top-3 right-3 ${statusColors[product.status]} text-xs font-semibold px-3.5 py-1 rounded-full`}>
           {product.status}
