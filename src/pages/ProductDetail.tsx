@@ -83,7 +83,7 @@ const ProductDetail = () => {
       case "SOLD OUT":
         return { text: "SOLD OUT", variant: "secondary" as const, disabled: true };
       case "COMING SOON":
-        return { text: "NOTIFY ME", variant: "secondary" as const, disabled: false };
+        return { text: "COMING SOON", variant: "secondary" as const, disabled: true };
     }
   };
 
@@ -126,7 +126,7 @@ const ProductDetail = () => {
 
             <div className="space-y-2 font-mono text-sm">
               <p className="text-muted-foreground">EDITION: <span className="text-foreground">{product.edition}</span></p>
-              <p className="text-muted-foreground">RELEASE: <span className="text-foreground">2024</span></p>
+              <p className="text-muted-foreground">RELEASE: <span className="text-foreground">2025</span></p>
             </div>
 
             <div className="space-y-3">

@@ -1,4 +1,5 @@
 import { ProductCard, type Product } from "./ProductCard";
+import jagermeisterRug from "@/assets/jagermeister-rug-1.png";
 
 export const products: Product[] = [
   {
@@ -17,7 +18,7 @@ export const products: Product[] = [
     category: "Automotive Art",
     price: 52000,
     edition: "012/050",
-    status: "SOLD OUT",
+    status: "LIVE",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
     colors: 3,
   },
@@ -37,8 +38,8 @@ export const products: Product[] = [
     category: "Textile Art",
     price: 68000,
     edition: "008/025",
-    status: "COMING SOON",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&h=800&fit=crop",
+    status: "LIVE",
+    image: jagermeisterRug,
     colors: 3,
   },
   {
