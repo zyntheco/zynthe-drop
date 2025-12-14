@@ -4,6 +4,11 @@ import jagermeisterRug2 from "@/assets/jagermeister-rug-2.png";
 import jagermeisterRug3 from "@/assets/jagermeister-rug-3.png";
 import jagermeisterRug4 from "@/assets/jagermeister-rug-4.png";
 import jagermeisterRug5 from "@/assets/jagermeister-rug-5.png";
+import f1Rug1 from "@/assets/f1-rug-1.png";
+import f1Rug2 from "@/assets/f1-rug-2.png";
+import f1Rug3 from "@/assets/f1-rug-3.png";
+import f1Rug4 from "@/assets/f1-rug-4.png";
+import f1Rug5 from "@/assets/f1-rug-5.png";
 
 export const products: Product[] = [
   {
@@ -54,7 +59,8 @@ export const products: Product[] = [
     price: 75000,
     edition: "001/050",
     status: "LIVE",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
+    image: f1Rug1,
+    images: [f1Rug1, f1Rug2, f1Rug3, f1Rug4, f1Rug5],
     colors: 3,
   },
 ];
@@ -77,7 +83,7 @@ export const ProductCarousel = ({ onAddToCart }: ProductCarouselProps) => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 snap-center w-[280px] md:w-[320px] lg:w-[360px]"
+            className="flex-shrink-0 snap-center w-[280px] md:w-[320px] lg:w-[360px] flex items-start"
           >
             <ProductCard product={product} onAddToCart={onAddToCart} />
           </div>
