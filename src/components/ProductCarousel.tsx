@@ -9,11 +9,13 @@ import f1Rug2 from "@/assets/f1-rug-2.png";
 import f1Rug3 from "@/assets/f1-rug-3.png";
 import f1Rug4 from "@/assets/f1-rug-4.png";
 import f1Rug5 from "@/assets/f1-rug-5.png";
+import mSeriesDiscLight1 from "@/assets/m-series-disc-light-1.png";
+import mSeriesDiscLight2 from "@/assets/m-series-disc-light-2.png";
 
 export const products: Product[] = [
   {
     id: "1",
-    name: "SPOOKY CONTROLLER STAND",
+    name: "TENTACLE CONTROLLER STAND",
     category: "Gaming Sculpture",
     price: 34000,
     edition: "025/100",
@@ -28,7 +30,8 @@ export const products: Product[] = [
     price: 52000,
     edition: "012/050",
     status: "LIVE",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
+    image: mSeriesDiscLight1,
+    images: [mSeriesDiscLight1, mSeriesDiscLight2],
     colors: 3,
   },
   {

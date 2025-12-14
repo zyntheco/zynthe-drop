@@ -41,28 +41,6 @@ const About = () => {
             </p>
           </section>
 
-          <section>
-            <h2 className="text-2xl font-bold text-foreground mb-6 uppercase tracking-wider">The Founders</h2>
-            <p className="leading-relaxed mb-4">
-              Zynthe was founded by a collective of artists, designers, and collectors who grew tired of 
-              seeing the same mass-produced items everywhere. We wanted to create something different. 
-              Something that mattered.
-            </p>
-            <p className="leading-relaxed">
-              Our team comes from diverse backgrounds—fine art, industrial design, gaming culture, automotive 
-              engineering—but we're united by a shared passion for creating objects that transcend their function 
-              and become part of your personal narrative.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-bold text-foreground mb-6 uppercase tracking-wider">Our Commitment</h2>
-            <p className="leading-relaxed">
-              Every Zynthe piece comes with a certificate of authenticity. We use premium materials, work with 
-              master craftspeople, and ensure that each item meets our exacting standards. We're not just selling 
-              products—we're creating future heirlooms.
-            </p>
-          </section>
 
           <section className="border-t border-border pt-12">
             <p className="text-center text-xl font-serif text-primary">
