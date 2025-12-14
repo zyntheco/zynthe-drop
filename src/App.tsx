@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { RouteScrollToTop } from "@/components/RouteScrollToTop";
+import { CartProvider } from "@/context/CartContext";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import Archive from "./pages/Archive";
@@ -124,14 +125,16 @@ const AnimatedRoutes = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <RouteScrollToTop />
-        <AnimatedRoutes />
-      </BrowserRouter>
-    </TooltipProvider>
+    <CartProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <RouteScrollToTop />
+          <AnimatedRoutes />
+        </BrowserRouter>
+      </TooltipProvider>
+    </CartProvider>
   </QueryClientProvider>
 );
 

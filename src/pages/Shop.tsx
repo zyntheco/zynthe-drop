@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { TextCarousel } from "@/components/TextCarousel";
 import { ProductCard, type Product } from "@/components/ProductCard";
-import { Cart, type CartItem } from "@/components/Cart";
+import { Cart } from "@/components/Cart";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { products } from "@/components/ProductCarousel";
 import { ProductModal } from "@/components/ProductModal";
@@ -11,17 +11,18 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { X, SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useCart } from "@/context/CartContext";
 
 const Shop = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [visibleProducts, setVisibleProducts] = useState<Set<number>>(new Set());
-  
+  const { addToCart, getItemsCount } = useCart();
+
   // Filter states
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  
+
   const categories = Array.from(new Set(products.map(p => p.category)));
   const statuses = Array.from(new Set(products.map(p => p.status)));
   const maxPrice = Math.max(...products.map(p => p.price));
@@ -47,32 +48,9 @@ const Shop = () => {
   }, []);
 
   const handleAddToCart = (product: Product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    }
+    addToCart(product);
     setCartOpen(true);
   };
-
-  const handleUpdateQuantity = (productId: string, quantity: number) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  const handleRemoveItem = (productId: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== productId));
-  };
-
-  const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Filter products
   const filteredProducts = products.filter((product) => {
@@ -106,7 +84,7 @@ const Shop = () => {
   return (
     <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
-      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItemsCount} />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
 
       <div className="container mx-auto px-4 pt-32 pb-12">
         <h1 className="font-serif text-4xl md:text-5xl text-primary mb-8 uppercase tracking-wide">
@@ -231,9 +209,6 @@ const Shop = () => {
       <Cart
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
       />
       
       <ScrollToTop />

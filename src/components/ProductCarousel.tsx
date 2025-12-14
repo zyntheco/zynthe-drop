@@ -9,6 +9,8 @@ import f1Rug2 from "@/assets/f1-rug-2.png";
 import f1Rug3 from "@/assets/f1-rug-3.png";
 import f1Rug4 from "@/assets/f1-rug-4.png";
 import f1Rug5 from "@/assets/f1-rug-5.png";
+import mSeriesLight1 from "@/assets/m-series-disc-light-1.png.png";
+import mSeriesLight2 from "@/assets/m-series-disc-light-2.png";
 
 export const products: Product[] = [
   {
@@ -28,12 +30,13 @@ export const products: Product[] = [
     price: 52000,
     edition: "012/050",
     status: "LIVE",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=800&fit=crop",
+    image: mSeriesLight1,
+    images: [mSeriesLight1, mSeriesLight2],
     colors: 3,
   },
   {
     id: "3",
-    name: "ROPE CONTROLLER STAND",
+    name: "CUSHION CONTROLLER STAND",
     category: "Gaming Sculpture",
     price: 22000,
     edition: "042/075",

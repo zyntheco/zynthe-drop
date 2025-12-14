@@ -7,55 +7,40 @@ import { ProductCarousel } from "@/components/ProductCarousel";
 import { Manifesto } from "@/components/Manifesto";
 import { EmailCapture } from "@/components/EmailCapture";
 import { Footer } from "@/components/Footer";
-import { Cart, type CartItem } from "@/components/Cart";
+import { Cart } from "@/components/Cart";
 import type { Product } from "@/components/ProductCard";
 import { toast } from "@/hooks/use-toast";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { useCart } from "@/context/CartContext";
 
 const Index = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { addToCart, getItemsCount } = useCart();
 
   const handleAddToCart = (product: Product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
+    const existingCart = JSON.parse(localStorage.getItem("zynthe_cart") || "[]");
+    const existingItem = existingCart.find((item: any) => item.id === product.id);
 
-      if (existingItem) {
-        toast({
-          title: "Updated Cart",
-          description: `${product.name} quantity increased.`,
-        });
-        return prevItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-
+    if (existingItem) {
+      toast({
+        title: "Updated Cart",
+        description: `${product.name} quantity increased.`,
+      });
+    } else {
       toast({
         title: "Added to Cart",
         description: `${product.name} has been added to your cart.`,
       });
-      return [...prevItems, { ...product, quantity: 1 }];
-    });
+    }
 
+    addToCart(product);
     setCartOpen(true);
-  };
-
-  const handleUpdateQuantity = (productId: string, quantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  const handleRemoveItem = (productId: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
   };
 
   return (
     <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
-      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
       <Hero />
       <CategoryHeader />
       <ProductCarousel onAddToCart={handleAddToCart} />
@@ -66,9 +51,6 @@ const Index = () => {
       <Cart
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
       />
     </div>
   );

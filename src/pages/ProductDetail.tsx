@@ -7,15 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { TextCarousel } from "@/components/TextCarousel";
 import { products } from "@/components/ProductCarousel";
-import { Cart, type CartItem } from "@/components/Cart";
+import { Cart } from "@/components/Cart";
 import type { Product } from "@/components/ProductCard";
+import { useCart } from "@/context/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const { addToCart, getItemsCount } = useCart();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,35 +45,8 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = (productToAdd: Product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === productToAdd.id);
-
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === productToAdd.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-
-      return [...prevItems, { ...productToAdd, quantity: 1 }];
-    });
-
+    addToCart(productToAdd);
     setCartOpen(true);
-  };
-
-  const handleUpdateQuantity = (productId: string, quantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item,
-      ),
-    );
-  };
-
-  const handleRemoveItem = (productId: string) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.id !== productId),
-    );
   };
 
   const canPurchase = product.status === "LIVE";
@@ -93,7 +67,7 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-background pt-16 animate-fade-in">
       <TextCarousel />
-      <Header />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
 
       <div className="container mx-auto px-4 py-8 md:py-12 overflow-x-hidden">
         <Button 
@@ -244,9 +218,6 @@ const ProductDetail = () => {
       <Cart
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
       />
 
       <Footer />
