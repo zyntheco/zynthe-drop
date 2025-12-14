@@ -11,6 +11,7 @@ export type Product = {
   edition: string;
   status: "LIVE" | "SOLD OUT" | "COMING SOON";
   image: string;
+  images?: string[];
   colors: number;
 };
 

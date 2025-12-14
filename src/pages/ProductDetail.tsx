@@ -15,6 +15,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -105,12 +106,35 @@ const ProductDetail = () => {
         </Button>
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
-          <div className="aspect-square bg-card">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
+          <div className="space-y-4">
+            <div className="aspect-square bg-card overflow-hidden rounded-lg">
+              <img
+                src={product.images?.[selectedImageIndex] || product.image}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {product.images && product.images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-2">
+                {product.images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all ${
+                      selectedImageIndex === index 
+                        ? 'border-primary' 
+                        : 'border-transparent opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`${product.name} ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className="flex flex-col justify-center space-y-6">
