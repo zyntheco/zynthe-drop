@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { TextCarousel } from "@/components/TextCarousel";
 import { products } from "@/components/ProductCarousel";
 import { Cart, type CartItem } from "@/components/Cart";
@@ -95,24 +95,44 @@ const ProductDetail = () => {
       <TextCarousel />
       <Header />
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12 overflow-x-hidden">
         <Button 
           variant="ghost" 
           onClick={() => navigate("/")}
-          className="mb-8 hover:text-primary"
+          className="mb-6 md:mb-8 hover:text-primary"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Shop
         </Button>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
-          <div className="space-y-4">
-            <div className="aspect-square bg-card overflow-hidden rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 max-w-6xl mx-auto">
+          <div className="space-y-4 w-full">
+            <div className="relative aspect-square bg-card overflow-hidden rounded-lg">
               <img
                 src={product.images?.[selectedImageIndex] || product.image}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
+              {product.images && product.images.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setSelectedImageIndex((prev) => 
+                      prev === 0 ? product.images!.length - 1 : prev - 1
+                    )}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full transition-colors"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => setSelectedImageIndex((prev) => 
+                      prev === product.images!.length - 1 ? 0 : prev + 1
+                    )}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full transition-colors"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </>
+              )}
             </div>
             {product.images && product.images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
@@ -120,7 +140,7 @@ const ProductDetail = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all ${
+                    className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-all ${
                       selectedImageIndex === index 
                         ? 'border-primary' 
                         : 'border-transparent opacity-60 hover:opacity-100'
@@ -137,15 +157,15 @@ const ProductDetail = () => {
             )}
           </div>
           
-          <div className="flex flex-col justify-center space-y-6">
+          <div className="flex flex-col justify-center space-y-4 md:space-y-6 w-full min-w-0">
             <Badge className={`${statusColors[product.status]} text-xs tracking-wider w-fit`}>
               {product.status}
             </Badge>
             
-            <div className="space-y-4">
-              <p className="text-sm tracking-widest text-muted-foreground uppercase">{product.category}</p>
-              <h1 className="text-4xl font-bold tracking-wide">{product.name}</h1>
-              <p className="text-2xl font-mono text-primary">₹{product.price.toLocaleString()}</p>
+            <div className="space-y-3 md:space-y-4">
+              <p className="text-xs md:text-sm tracking-widest text-muted-foreground uppercase">{product.category}</p>
+              <h1 className="text-2xl md:text-4xl font-bold tracking-wide break-words">{product.name}</h1>
+              <p className="text-xl md:text-2xl font-mono text-primary">₹{product.price.toLocaleString()}</p>
             </div>
 
             <div className="space-y-2 font-mono text-sm">
