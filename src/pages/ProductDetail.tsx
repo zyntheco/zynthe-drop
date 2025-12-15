@@ -72,7 +72,7 @@ const ProductDetail = () => {
       <div className="container mx-auto px-4 py-8 md:py-12 overflow-x-hidden">
         <Button 
           variant="ghost" 
-          onClick={() => navigate("/")}
+          onClick={() => navigate(-1)}
           className="mb-6 md:mb-8 hover:text-primary"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -172,19 +172,17 @@ const ProductDetail = () => {
                 <h3 className="text-lg font-bold uppercase tracking-wider">DETAILS</h3>
                 <div className="space-y-3 text-sm leading-relaxed">
                   <p className="font-bold uppercase">INTRODUCING {product.name}</p>
-                  <p>
-                    A premium collectible crafted with exceptional attention to detail. 
-                    Each piece is individually numbered and comes with a certificate of authenticity.
-                  </p>
-                  <div className="space-y-2 mt-4">
-                    <p className="font-bold uppercase">FEATURES:</p>
-                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                      <li>Premium materials and construction</li>
-                      <li>Limited edition numbered piece</li>
-                      <li>Certificate of authenticity included</li>
-                      <li>Designed by renowned artists</li>
-                    </ul>
-                  </div>
+                  <p>{product.description}</p>
+                  {product.features && product.features.length > 0 && (
+                    <div className="space-y-2 mt-4">
+                      <p className="font-bold uppercase">FEATURES:</p>
+                      <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                        {product.features.map((feature, index) => (
+                          <li key={index}>{feature}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <p className="mt-4">
                     Each piece is carefully packaged to ensure it arrives in perfect condition. 
                     A true collector's item that will appreciate in value over time.
@@ -201,14 +199,10 @@ const ProductDetail = () => {
               </div>
 
               <div className="space-y-4 border-t border-border pt-8">
-                <h3 className="text-lg font-bold uppercase tracking-wider">MATERIAL & DIMENSIONS</h3>
-                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-                  <li>Premium resin body with matte finish</li>
-                  <li>Metal base plate for stability</li>
-                  <li>High-quality paint and finishing</li>
-                  <li>Weight: Varies by piece</li>
-                  <li>Dimensions: See product specifications</li>
-                </ul>
+                <h3 className="text-lg font-bold uppercase tracking-wider">DIMENSIONS</h3>
+                <p className="text-sm text-muted-foreground">{product.dimensions || "See product specifications"}</p>
+                <h3 className="text-lg font-bold uppercase tracking-wider mt-4">MATERIALS</h3>
+                <p className="text-sm text-muted-foreground">To be added</p>
               </div>
             </div>
           </div>

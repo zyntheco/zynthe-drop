@@ -12,7 +12,10 @@ export type Product = {
   status: "LIVE" | "SOLD OUT" | "COMING SOON";
   image: string;
   images?: string[];
-  colors: number;
+  colors?: number;
+  description?: string;
+  features?: string[];
+  dimensions?: string;
 };
 
 type ProductCardProps = {

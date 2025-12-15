@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Cart, type CartItem } from "@/components/Cart";
+import { Cart } from "@/components/Cart";
 import { ProductCard, type Product } from "@/components/ProductCard";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { TextCarousel } from "@/components/TextCarousel";
+import { useCart } from "@/context/CartContext";
 
 // Archive products - sold out items
 const archiveProducts: Product[] = [
@@ -72,24 +73,12 @@ const archiveProducts: Product[] = [
 
 const Archive = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-
-  const handleUpdateQuantity = (productId: string, quantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  const handleRemoveItem = (productId: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
-  };
+  const { getItemsCount } = useCart();
 
   return (
     <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
-      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
 
       {/* Hero Section - aligned with main hero styling */}
       <section className="relative w-full min-h-[50vh] md:min-h-[60vh] overflow-hidden bg-background pt-24 md:pt-28">
@@ -105,8 +94,8 @@ const Archive = () => {
               Past drops, never repeated.
             </h1>
             <p className="text-sm md:text-base text-white/70 max-w-xl mx-auto">
-              A record of every limited edition piece we’ve released. Once a piece
-              enters the archive, it’s gone for good.
+              A record of every limited edition piece we've released. Once a piece
+              enters the archive, it's gone for good.
             </p>
           </div>
         </div>
@@ -149,9 +138,6 @@ const Archive = () => {
       <Cart
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
       />
     </div>
   );

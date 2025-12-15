@@ -1,36 +1,25 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Cart, type CartItem } from "@/components/Cart";
+import { Cart } from "@/components/Cart";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { Mail, Instagram, MapPin } from "lucide-react";
+import { Mail, Instagram } from "lucide-react";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { TextCarousel } from "@/components/TextCarousel";
+import { useCart } from "@/context/CartContext";
 
 const Contact = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { getItemsCount } = useCart();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
-
-  const handleUpdateQuantity = (productId: string, quantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  const handleRemoveItem = (productId: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +42,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
-      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={cartItems.length} />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
 
       {/* Hero Section - Dark cinematic style matching site theme */}
       <section className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden pt-16">
@@ -193,8 +182,6 @@ const Contact = () => {
                     </a>
                   </div>
                 </div>
-
-                {/* Studio block removed as requested */}
               </div>
 
               <div className="mt-12 p-6 bg-card border border-border">
@@ -214,9 +201,6 @@ const Contact = () => {
       <Cart
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
       />
     </div>
   );
