@@ -13,6 +13,7 @@ import Archive from "./pages/Archive";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ProductDetail from "./pages/ProductDetail";
+import CartPage from "./pages/CartPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -82,6 +83,14 @@ const AnimatedRoutes = () => {
           element={
             <PageTransition>
               <ProductDetail />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <PageTransition>
+              <CartPage />
             </PageTransition>
           }
         />

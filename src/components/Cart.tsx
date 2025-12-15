@@ -97,14 +97,12 @@ export const Cart = ({ isOpen, onClose }: CartProps) => {
               <span className="font-bold text-primary">₹{subtotal.toLocaleString()}</span>
             </div>
 
-            <Link to="/shop" onClick={onClose} className="w-full block">
-              <Button className="w-full py-6 text-base tracking-wider font-bold">
-                PROCEED TO CHECKOUT
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            </Link>
+            <Button className="w-full py-6 text-base tracking-wider font-bold" disabled>
+              PROCEED TO CHECKOUT
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
 
-            <Link to="/shop" onClick={onClose} className="w-full block">
+            <Link to="/cart" onClick={onClose} className="w-full block">
               <Button variant="outline" className="w-full">
                 GO TO CART
               </Button>

@@ -9,62 +9,109 @@ import f1Rug2 from "@/assets/f1-rug-2.png";
 import f1Rug3 from "@/assets/f1-rug-3.png";
 import f1Rug4 from "@/assets/f1-rug-4.png";
 import f1Rug5 from "@/assets/f1-rug-5.png";
-import mSeriesLight1 from "@/assets/m-series-disc-light-1.png.png";
-import mSeriesLight2 from "@/assets/m-series-disc-light-2.png";
+import tentacleStand1 from "@/assets/tentacle-stand-1.png";
+import tentacleStand2 from "@/assets/tentacle-stand-2.png";
+import tentacleStand3 from "@/assets/tentacle-stand-3.png";
+import tentacleStand4 from "@/assets/tentacle-stand-4.png";
+import cushionStand1 from "@/assets/cushion-stand-1.png";
+import cushionStand2 from "@/assets/cushion-stand-2.png";
+import cushionStand3 from "@/assets/cushion-stand-3.png";
+import cushionStand4 from "@/assets/cushion-stand-4.png";
 
 export const products: Product[] = [
   {
     id: "1",
     name: "TENTACLE CONTROLLER STAND",
     category: "Gaming Sculpture",
-    price: 34000,
+    price: 2399,
     edition: "025/100",
     status: "LIVE",
-    image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=800&h=800&fit=crop",
+    image: tentacleStand1,
+    images: [tentacleStand1, tentacleStand2, tentacleStand3, tentacleStand4],
     colors: 3,
+    description: "A stunning octopus tentacle-shaped controller stand that brings the deep sea to your gaming setup. Hand-painted in vibrant blue with intricate sucker details.",
+    features: [
+      "Fits PS5, Xbox, and Switch Pro controllers",
+      "Hand-painted resin with matte finish",
+      "Weighted base for stability",
+      "Non-slip grip points"
+    ],
+    dimensions: "Height: 15cm | Width: 18cm | Depth: 12cm"
   },
   {
     id: "2",
     name: "M-SERIES DISC LIGHT",
     category: "Automotive Art",
-    price: 52000,
+    price: 13999,
     edition: "012/050",
     status: "LIVE",
-    image: mSeriesLight1,
-    images: [mSeriesLight1, mSeriesLight2],
+    image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=800&h=800&fit=crop",
     colors: 3,
+    description: "A premium LED disc light featuring iconic M-Series motorsport heritage. Perfect ambient lighting for car enthusiasts and collectors.",
+    features: [
+      "LED backlit with adjustable brightness",
+      "Premium acrylic construction",
+      "Wall-mountable design",
+      "Low power consumption"
+    ],
+    dimensions: "Diameter: 40cm | Depth: 5cm"
   },
   {
     id: "3",
     name: "CUSHION CONTROLLER STAND",
     category: "Gaming Sculpture",
-    price: 22000,
+    price: 2999,
     edition: "042/075",
     status: "LIVE",
-    image: "https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?w=800&h=800&fit=crop",
+    image: cushionStand1,
+    images: [cushionStand1, cushionStand2, cushionStand3, cushionStand4],
     colors: 3,
+    description: "A luxurious pillow-shaped controller stand that cradles your controller in style. Features realistic fabric-like texture sculpted in premium resin.",
+    features: [
+      "Universal controller compatibility",
+      "Realistic fabric texture sculpting",
+      "Available in multiple colorways",
+      "Premium weighted base"
+    ],
+    dimensions: "Height: 12cm | Width: 16cm | Depth: 14cm"
   },
   {
     id: "4",
     name: "JÄGERMEISTER RUG",
     category: "Textile Art",
-    price: 68000,
+    price: 6499,
     edition: "008/025",
     status: "LIVE",
     image: jagermeisterRug1,
     images: [jagermeisterRug1, jagermeisterRug2, jagermeisterRug3, jagermeisterRug4, jagermeisterRug5],
     colors: 3,
+    description: "A premium hand-tufted rug featuring the iconic Jägermeister stag logo. Perfect statement piece for bars, man caves, or collector spaces.",
+    features: [
+      "Hand-tufted premium acrylic yarn",
+      "Dense pile for luxury feel",
+      "Non-slip backing",
+      "Officially inspired design"
+    ],
+    dimensions: "Width: 80cm | Length: 120cm | Pile Height: 15mm"
   },
   {
     id: "5",
     name: "F1 RUG",
     category: "Textile Art",
-    price: 75000,
+    price: 4599,
     edition: "001/050",
     status: "LIVE",
     image: f1Rug1,
     images: [f1Rug1, f1Rug2, f1Rug3, f1Rug4, f1Rug5],
     colors: 3,
+    description: "A motorsport-inspired hand-tufted rug celebrating the spirit of Formula 1 racing. Bold colors and dynamic design for racing enthusiasts.",
+    features: [
+      "Hand-tufted premium acrylic yarn",
+      "Racing-inspired color palette",
+      "Non-slip latex backing",
+      "Durable for high-traffic areas"
+    ],
+    dimensions: "Width: 70cm | Length: 100cm | Pile Height: 15mm"
   },
 ];
 
