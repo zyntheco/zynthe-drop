@@ -17,6 +17,8 @@ import cushionStand1 from "@/assets/cushion-stand-1.png";
 import cushionStand2 from "@/assets/cushion-stand-2.png";
 import cushionStand3 from "@/assets/cushion-stand-3.png";
 import cushionStand4 from "@/assets/cushion-stand-4.png";
+import mSeriesDiscLight1 from "@/assets/m-series-disc-light-1.png";
+import mSeriesDiscLight2 from "@/assets/m-series-disc-light-2.png";
 
 export const products: Product[] = [
   {
@@ -45,7 +47,8 @@ export const products: Product[] = [
     price: 13999,
     edition: "012/050",
     status: "LIVE",
-    image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=800&h=800&fit=crop",
+    image: mSeriesDiscLight1,
+    images: [mSeriesDiscLight1, mSeriesDiscLight2],
     colors: 3,
     description: "A premium LED disc light featuring iconic M-Series motorsport heritage. Perfect ambient lighting for car enthusiasts and collectors.",
     features: [
@@ -123,7 +126,7 @@ export const ProductCarousel = ({ onAddToCart }: ProductCarouselProps) => {
   return (
     <section className="bg-[#0A0A0A] py-8 md:py-12 overflow-hidden">
       <div
-        className="flex overflow-x-auto gap-4 px-5 scrollbar-hide snap-x snap-mandatory scroll-smooth"
+        className="flex overflow-x-auto gap-4 px-5 scrollbar-hide snap-x snap-mandatory scroll-smooth items-stretch"
         style={{
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
@@ -133,7 +136,7 @@ export const ProductCarousel = ({ onAddToCart }: ProductCarouselProps) => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 snap-center w-[280px] md:w-[320px] lg:w-[360px] flex items-start"
+            className="flex-shrink-0 snap-center w-[280px] md:w-[320px] lg:w-[360px] flex"
           >
             <ProductCard product={product} onAddToCart={onAddToCart} />
           </div>
