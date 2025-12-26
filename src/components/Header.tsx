@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
 import logo from "@/assets/zynthe-logo.png";
-import { products } from "@/components/ProductCarousel";
 
 type HeaderProps = {
   onCartOpen?: () => void;
@@ -15,19 +14,11 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  
-  const filteredProducts = searchQuery.trim() 
-    ? products.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
 
   return (
     <header className="fixed top-8 left-0 right-0 z-50 bg-gradient-to-b from-background/80 via-background/60 to-background/0 backdrop-blur-xl">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Left: Desktop Navigation & Mobile Menu */}
           <div className="flex items-center gap-8">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
@@ -37,90 +28,31 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px]">
                 <nav className="flex flex-col gap-6 mt-8">
-                  <Link
-                    to="/shop"
-                    className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    SHOP ALL
-                  </Link>
-                  <Link
-                    to="/archive"
-                    className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    ARCHIVE
-                  </Link>
-                  <Link
-                    to="/about"
-                    className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    ABOUT
-                  </Link>
-                  <Link
-                    to="/contact"
-                    className="text-lg tracking-wider hover:text-primary transition-colors font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    CONTACT US
-                  </Link>
+                  <Link to="/shop" className="text-lg tracking-wider hover:text-primary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>SHOP ALL</Link>
+                  <Link to="/archive" className="text-lg tracking-wider hover:text-primary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>ARCHIVE</Link>
+                  <Link to="/about" className="text-lg tracking-wider hover:text-primary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>ABOUT</Link>
+                  <Link to="/contact" className="text-lg tracking-wider hover:text-primary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>CONTACT US</Link>
                 </nav>
               </SheetContent>
             </Sheet>
             
-            {/* Desktop Navigation Links */}
             <nav className="hidden md:flex items-center gap-6">
-              <Link
-                to="/shop"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
-              >
-                SHOP ALL
-              </Link>
-              <Link
-                to="/archive"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
-              >
-                ARCHIVE
-              </Link>
-              <Link
-                to="/about"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
-              >
-                ABOUT
-              </Link>
-              <Link
-                to="/contact"
-                className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white"
-              >
-                CONTACT US
-              </Link>
+              <Link to="/shop" className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white">SHOP ALL</Link>
+              <Link to="/archive" className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white">ARCHIVE</Link>
+              <Link to="/about" className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white">ABOUT</Link>
+              <Link to="/contact" className="text-sm tracking-wider hover:text-primary transition-colors font-medium text-white/90 hover:text-white">CONTACT US</Link>
             </nav>
           </div>
 
-          {/* Center: Logo */}
           <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
             <img src={logo} alt="ZYNTHE" className="h-24 w-auto drop-shadow-lg" loading="eager" fetchPriority="high" />
           </Link>
 
-          {/* Right: Action Buttons */}
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:text-primary text-white"
-              onClick={() => setSearchOpen(!searchOpen)}
-              title="Search"
-            >
+            <Button variant="ghost" size="icon" className="hover:text-primary text-white" onClick={() => setSearchOpen(!searchOpen)} title="Search">
               <Search className="h-5 w-5" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:text-primary relative text-white"
-              onClick={onCartOpen}
-              title="Shopping Bag"
-            >
+            <Button variant="ghost" size="icon" className="hover:text-primary relative text-white" onClick={onCartOpen} title="Shopping Bag">
               <ShoppingBag className="h-5 w-5" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
@@ -131,7 +63,6 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
           </div>
         </div>
 
-        {/* Search Bar */}
         {searchOpen && (
           <div className="mt-4 animate-fade-in relative">
             <div className="relative">
@@ -144,55 +75,14 @@ export const Header = ({ onCartOpen, cartItemsCount = 0 }: HeaderProps) => {
                 autoFocus
               />
               {searchQuery && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
-                  onClick={() => setSearchQuery("")}
-                >
+                <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8" onClick={() => setSearchQuery("")}>
                   <X className="h-4 w-4" />
                 </Button>
               )}
             </div>
-            
-            {/* Search Results */}
-            {filteredProducts.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-background border border-border max-h-96 overflow-y-auto z-50 shadow-lg">
-                {filteredProducts.map((product) => (
-                  <Link
-                    key={product.id}
-                    to={`/product/${product.id}`}
-                    className="flex items-center gap-4 p-4 hover:bg-secondary/50 transition-colors border-b border-border last:border-b-0"
-                    onClick={() => {
-                      setSearchOpen(false);
-                      setSearchQuery("");
-                    }}
-                  >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-16 h-16 object-cover"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-bold text-sm uppercase">{product.name}</h3>
-                      <p className="text-xs text-muted-foreground">{product.category}</p>
-                    </div>
-                    <p className="font-bold text-primary">₹{product.price.toLocaleString()}</p>
-                  </Link>
-                ))}
-              </div>
-            )}
-            
-            {searchQuery.trim() && filteredProducts.length === 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-background border border-border p-8 text-center z-50 shadow-lg">
-                <p className="text-muted-foreground">No products found for "{searchQuery}"</p>
-              </div>
-            )}
           </div>
         )}
       </div>
-      
-      {/* Subtle white line at bottom of header */}
       <div className="mx-4 h-px bg-white/15" />
     </header>
   );

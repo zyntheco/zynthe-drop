@@ -4,25 +4,64 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { TextCarousel } from "@/components/TextCarousel";
-import { products } from "@/components/ProductCarousel";
 import { Cart } from "@/components/Cart";
-import type { Product } from "@/components/ProductCard";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/stores/cartStore";
+import { fetchProductByHandle, ShopifyProduct, CartItem } from "@/lib/shopify";
+import { toast } from "sonner";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { addToCart, getItemsCount } = useCart();
+  const [product, setProduct] = useState<ShopifyProduct['node'] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { addItem, getTotalItems } = useCartStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const loadProduct = async () => {
+      if (!id) return;
+      try {
+        const productData = await fetchProductByHandle(id);
+        setProduct(productData);
+      } catch (error) {
+        console.error('Failed to load product:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProduct();
   }, [id]);
-  
-  const product = products.find(p => p.id === id);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    const variant = product.variants.edges[0]?.node;
+    if (!variant) return;
+
+    const cartItem: CartItem = {
+      product: { node: product } as ShopifyProduct,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity: 1,
+      selectedOptions: variant.selectedOptions || [],
+    };
+
+    addItem(cartItem);
+    toast.success(`${product.title} added to cart`);
+    setCartOpen(true);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background pt-16 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
   
   if (!product) {
     return (
@@ -38,43 +77,18 @@ const ProductDetail = () => {
     );
   }
 
-  const statusColors = {
-    "LIVE": "bg-live text-primary-foreground",
-    "SOLD OUT": "bg-sold-out text-destructive-foreground",
-    "COMING SOON": "bg-coming-soon text-foreground",
-  };
-
-  const handleAddToCart = (productToAdd: Product) => {
-    addToCart(productToAdd);
-    setCartOpen(true);
-  };
-
-  const canPurchase = product.status === "LIVE";
-
-  const getButtonConfig = () => {
-    switch (product.status) {
-      case "LIVE":
-        return { text: "ADD TO BAG", variant: "default" as const, disabled: false };
-      case "SOLD OUT":
-        return { text: "SOLD OUT", variant: "secondary" as const, disabled: true };
-      case "COMING SOON":
-        return { text: "COMING SOON", variant: "secondary" as const, disabled: true };
-    }
-  };
-
-  const buttonConfig = getButtonConfig();
+  const images = product.images.edges.map(e => e.node.url);
+  const variant = product.variants.edges[0]?.node;
+  const isAvailable = variant?.availableForSale ?? true;
+  const price = parseFloat(product.priceRange.minVariantPrice.amount);
 
   return (
     <div className="min-h-screen bg-background pt-16 animate-fade-in">
       <TextCarousel />
-      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getTotalItems()} />
 
       <div className="container mx-auto px-4 py-8 md:py-12 overflow-x-hidden">
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate(-1)}
-          className="mb-6 md:mb-8 hover:text-primary"
-        >
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6 md:mb-8 hover:text-primary">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Shop
         </Button>
@@ -82,49 +96,23 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 max-w-6xl mx-auto">
           <div className="space-y-4 w-full">
             <div className="relative aspect-square bg-card overflow-hidden rounded-lg">
-              <img
-                src={product.images?.[selectedImageIndex] || product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-              {product.images && product.images.length > 1 && (
+              <img src={images[selectedImageIndex] || ''} alt={product.title} className="w-full h-full object-cover" />
+              {images.length > 1 && (
                 <>
-                  <button
-                    onClick={() => setSelectedImageIndex((prev) => 
-                      prev === 0 ? product.images!.length - 1 : prev - 1
-                    )}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full transition-colors"
-                  >
+                  <button onClick={() => setSelectedImageIndex((prev) => prev === 0 ? images.length - 1 : prev - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full transition-colors">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
-                  <button
-                    onClick={() => setSelectedImageIndex((prev) => 
-                      prev === product.images!.length - 1 ? 0 : prev + 1
-                    )}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full transition-colors"
-                  >
+                  <button onClick={() => setSelectedImageIndex((prev) => prev === images.length - 1 ? 0 : prev + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-2 rounded-full transition-colors">
                     <ChevronRight className="h-5 w-5" />
                   </button>
                 </>
               )}
             </div>
-            {product.images && product.images.length > 1 && (
+            {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
-                {product.images.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-all ${
-                      selectedImageIndex === index 
-                        ? 'border-primary' 
-                        : 'border-transparent opacity-60 hover:opacity-100'
-                    }`}
-                  >
-                    <img
-                      src={img}
-                      alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+                {images.map((img, index) => (
+                  <button key={index} onClick={() => setSelectedImageIndex(index)} className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-all ${selectedImageIndex === index ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                    <img src={img} alt={`${product.title} ${index + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -132,88 +120,32 @@ const ProductDetail = () => {
           </div>
           
           <div className="flex flex-col justify-center space-y-4 md:space-y-6 w-full min-w-0">
-            <Badge className={`${statusColors[product.status]} text-xs tracking-wider w-fit`}>
-              {product.status}
+            <Badge className={`${isAvailable ? 'bg-primary text-primary-foreground' : 'bg-destructive text-white'} text-xs tracking-wider w-fit`}>
+              {isAvailable ? 'LIVE' : 'SOLD OUT'}
             </Badge>
             
             <div className="space-y-3 md:space-y-4">
-              <p className="text-xs md:text-sm tracking-widest text-muted-foreground uppercase">{product.category}</p>
-              <h1 className="text-2xl md:text-4xl font-bold tracking-wide break-words">{product.name}</h1>
-              <p className="text-xl md:text-2xl font-mono text-primary">₹{product.price.toLocaleString()}</p>
-            </div>
-
-            <div className="space-y-2 font-mono text-sm">
-              <p className="text-muted-foreground">EDITION: <span className="text-foreground">{product.edition}</span></p>
-              <p className="text-muted-foreground">RELEASE: <span className="text-foreground">2025</span></p>
+              <h1 className="text-2xl md:text-4xl font-bold tracking-wide break-words">{product.title}</h1>
+              <p className="text-xl md:text-2xl font-mono text-primary">₹{price.toLocaleString()}</p>
             </div>
 
             <div className="space-y-3">
-              <Button 
-                className="w-full tracking-wider text-sm py-6"
-                variant={buttonConfig.variant}
-                disabled={buttonConfig.disabled}
-                onClick={() => canPurchase && handleAddToCart(product)}
-              >
-                {buttonConfig.text}
-              </Button>
-              <Button 
-                className="w-full tracking-wider text-sm py-6"
-                variant="outline"
-                disabled={!canPurchase}
-                onClick={() => canPurchase && handleAddToCart(product)}
-              >
-                BUY IT NOW
+              <Button className="w-full tracking-wider text-sm py-6" disabled={!isAvailable} onClick={handleAddToCart}>
+                {isAvailable ? 'ADD TO BAG' : 'SOLD OUT'}
               </Button>
             </div>
 
-            {/* Product Details Section */}
             <div className="mt-12 space-y-8 border-t border-border pt-8">
               <div className="space-y-4">
                 <h3 className="text-lg font-bold uppercase tracking-wider">DETAILS</h3>
-                <div className="space-y-3 text-sm leading-relaxed">
-                  <p className="font-bold uppercase">INTRODUCING {product.name}</p>
-                  <p>{product.description}</p>
-                  {product.features && product.features.length > 0 && (
-                    <div className="space-y-2 mt-4">
-                      <p className="font-bold uppercase">FEATURES:</p>
-                      <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                        {product.features.map((feature, index) => (
-                          <li key={index}>{feature}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  <p className="mt-4">
-                    Each piece is carefully packaged to ensure it arrives in perfect condition. 
-                    A true collector's item that will appreciate in value over time.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-4 border-t border-border pt-8">
-                <h3 className="text-lg font-bold uppercase tracking-wider">CARE</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Handle with care. Clean with a soft, dry cloth. Avoid direct sunlight and extreme temperatures 
-                  to preserve the finish and colors.
-                </p>
-              </div>
-
-              <div className="space-y-4 border-t border-border pt-8">
-                <h3 className="text-lg font-bold uppercase tracking-wider">DIMENSIONS</h3>
-                <p className="text-sm text-muted-foreground">{product.dimensions || "See product specifications"}</p>
-                <h3 className="text-lg font-bold uppercase tracking-wider mt-4">MATERIALS</h3>
-                <p className="text-sm text-muted-foreground">To be added</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{product.description}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
       
-      <Cart
-        isOpen={cartOpen}
-        onClose={() => setCartOpen(false)}
-      />
-
+      <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <Footer />
     </div>
   );
