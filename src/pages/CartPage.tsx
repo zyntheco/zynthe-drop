@@ -4,22 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Cart } from "@/components/Cart";
 import { TextCarousel } from "@/components/TextCarousel";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/stores/cartStore";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Minus, Plus, X, ArrowLeft, ArrowRight, ShoppingBag } from "lucide-react";
+import { Minus, Plus, X, ArrowLeft, ArrowRight, ShoppingBag, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const CartPage = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const { items, updateQuantity, removeItem, getTotalPrice, getItemsCount } = useCart();
+  const { items, updateQuantity, removeItem, getTotalPrice, getTotalItems, createCheckout, isLoading } = useCartStore();
   const navigate = useNavigate();
 
   const subtotal = getTotalPrice();
 
+  const handleCheckout = async () => {
+    try {
+      const checkoutUrl = await createCheckout();
+      if (checkoutUrl) {
+        window.open(checkoutUrl, '_blank');
+      } else {
+        toast.error("Failed to create checkout. Please try again.");
+      }
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      toast.error("Failed to create checkout. Please try again.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
-      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getTotalItems()} />
 
       <div className="container mx-auto px-4 py-12 md:py-24">
         <Button 
@@ -50,33 +65,36 @@ const CartPage = () => {
             <div className="lg:col-span-2 space-y-6">
               {items.map((item) => (
                 <div 
-                  key={item.id} 
+                  key={item.variantId} 
                   className="flex gap-4 md:gap-6 p-4 md:p-6 bg-card border border-border rounded-lg"
                 >
                   <div className="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 bg-secondary rounded-lg overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
+                    {item.product.node.images?.edges?.[0]?.node && (
+                      <img
+                        src={item.product.node.images.edges[0].node.url}
+                        alt={item.product.node.title}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
 
                   <div className="flex-1 flex flex-col min-w-0">
                     <div className="flex justify-between items-start gap-2">
                       <div className="min-w-0">
-                        <Link to={`/product/${item.id}`}>
+                        <Link to={`/product/${item.product.node.handle}`}>
                           <h3 className="font-bold text-sm md:text-base uppercase leading-tight break-words hover:text-primary transition-colors">
-                            {item.name}
+                            {item.product.node.title}
                           </h3>
                         </Link>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1">{item.category}</p>
-                        <p className="text-xs text-muted-foreground">{item.edition}</p>
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1">
+                          {item.selectedOptions.map(o => o.value).join(' / ')}
+                        </p>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 flex-shrink-0"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => removeItem(item.variantId)}
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -88,7 +106,7 @@ const CartPage = () => {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                          onClick={() => updateQuantity(item.variantId, Math.max(1, item.quantity - 1))}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
@@ -97,14 +115,14 @@ const CartPage = () => {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
 
                       <p className="font-bold text-primary text-base md:text-lg">
-                        ₹{(item.price * item.quantity).toLocaleString()}
+                        ₹{(parseFloat(item.price.amount) * item.quantity).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -135,13 +153,23 @@ const CartPage = () => {
 
                 <Button 
                   className="w-full py-6 text-base tracking-wider font-bold"
-                  disabled
+                  onClick={handleCheckout}
+                  disabled={isLoading || items.length === 0}
                 >
-                  PROCEED TO CHECKOUT
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Creating Checkout...
+                    </>
+                  ) : (
+                    <>
+                      PROCEED TO CHECKOUT
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </>
+                  )}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-3">
-                  Connect to Shopify to enable checkout
+                  Secure checkout powered by Shopify
                 </p>
               </div>
             </div>

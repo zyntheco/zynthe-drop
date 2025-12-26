@@ -1,8 +1,9 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { X, Minus, Plus, ArrowRight } from "lucide-react";
-import { useCart } from "@/context/CartContext";
+import { X, Minus, Plus, ArrowRight, Loader2 } from "lucide-react";
+import { useCartStore } from "@/stores/cartStore";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 type CartProps = {
   isOpen: boolean;
@@ -10,8 +11,23 @@ type CartProps = {
 };
 
 export const Cart = ({ isOpen, onClose }: CartProps) => {
-  const { items, updateQuantity, removeItem, getTotalPrice } = useCart();
+  const { items, updateQuantity, removeItem, getTotalPrice, createCheckout, isLoading } = useCartStore();
   const subtotal = getTotalPrice();
+
+  const handleCheckout = async () => {
+    try {
+      const checkoutUrl = await createCheckout();
+      if (checkoutUrl) {
+        window.open(checkoutUrl, '_blank');
+        onClose();
+      } else {
+        toast.error("Failed to create checkout. Please try again.");
+      }
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      toast.error("Failed to create checkout. Please try again.");
+    }
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -31,28 +47,32 @@ export const Cart = ({ isOpen, onClose }: CartProps) => {
           ) : (
             <div className="space-y-6 py-6">
               {items.map((item) => (
-                <div key={item.id} className="flex gap-4 pb-6 border-b border-border last:border-b-0">
+                <div key={item.variantId} className="flex gap-4 pb-6 border-b border-border last:border-b-0">
                   <div className="w-20 h-20 flex-shrink-0 bg-card rounded-lg overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
+                    {item.product.node.images?.edges?.[0]?.node && (
+                      <img
+                        src={item.product.node.images.edges[0].node.url}
+                        alt={item.product.node.title}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
 
                   <div className="flex-1 flex flex-col min-w-0">
                     <div className="flex justify-between items-start gap-2 mb-2">
                       <div className="min-w-0">
                         <h3 className="font-bold text-xs uppercase leading-tight break-words">
-                          {item.name}
+                          {item.product.node.title}
                         </h3>
-                        <p className="text-xs text-muted-foreground mt-1">{item.edition}</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {item.selectedOptions.map(o => o.value).join(' / ')}
+                        </p>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-6 w-6 -mt-1 flex-shrink-0"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => removeItem(item.variantId)}
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -64,7 +84,7 @@ export const Cart = ({ isOpen, onClose }: CartProps) => {
                           variant="ghost"
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                          onClick={() => updateQuantity(item.variantId, Math.max(1, item.quantity - 1))}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
@@ -73,14 +93,14 @@ export const Cart = ({ isOpen, onClose }: CartProps) => {
                           variant="ghost"
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
 
                       <p className="font-bold text-primary text-sm">
-                        ₹{(item.price * item.quantity).toLocaleString()}
+                        ₹{(parseFloat(item.price.amount) * item.quantity).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -97,9 +117,22 @@ export const Cart = ({ isOpen, onClose }: CartProps) => {
               <span className="font-bold text-primary">₹{subtotal.toLocaleString()}</span>
             </div>
 
-            <Button className="w-full py-6 text-base tracking-wider font-bold" disabled>
-              PROCEED TO CHECKOUT
-              <ArrowRight className="h-4 w-4 ml-2" />
+            <Button 
+              className="w-full py-6 text-base tracking-wider font-bold" 
+              onClick={handleCheckout}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Creating Checkout...
+                </>
+              ) : (
+                <>
+                  PROCEED TO CHECKOUT
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </>
+              )}
             </Button>
 
             <Link to="/cart" onClick={onClose} className="w-full block">

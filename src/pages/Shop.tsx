@@ -2,31 +2,47 @@ import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { TextCarousel } from "@/components/TextCarousel";
-import { ProductCard, type Product } from "@/components/ProductCard";
 import { Cart } from "@/components/Cart";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import { products } from "@/components/ProductCarousel";
-import { ProductModal } from "@/components/ProductModal";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { X, SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
+import { X, SlidersHorizontal, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/stores/cartStore";
+import { fetchProducts, ShopifyProduct, CartItem } from "@/lib/shopify";
+import { ShopifyProductCard } from "@/components/ShopifyProductCard";
+import { toast } from "sonner";
 
 const Shop = () => {
   const [cartOpen, setCartOpen] = useState(false);
+  const [products, setProducts] = useState<ShopifyProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [visibleProducts, setVisibleProducts] = useState<Set<number>>(new Set());
-  const { addToCart, getItemsCount } = useCart();
+  const { addItem, getTotalItems } = useCartStore();
 
   // Filter states
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [priceRange, setPriceRange] = useState<number[]>([0, 20000]);
 
-  const categories = Array.from(new Set(products.map(p => p.category)));
-  const statuses = Array.from(new Set(products.map(p => p.status)));
-  const maxPrice = Math.max(...products.map(p => p.price));
-  const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const shopifyProducts = await fetchProducts(50);
+        setProducts(shopifyProducts);
+        
+        if (shopifyProducts.length > 0) {
+          const maxPrice = Math.max(...shopifyProducts.map(p => parseFloat(p.node.priceRange.minVariantPrice.amount)));
+          setPriceRange([0, Math.ceil(maxPrice)]);
+        }
+      } catch (error) {
+        console.error('Failed to load products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,26 +61,36 @@ const Shop = () => {
     productElements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [products]);
 
-  const handleAddToCart = (product: Product) => {
-    addToCart(product);
+  const handleAddToCart = (product: ShopifyProduct) => {
+    const variant = product.node.variants.edges[0]?.node;
+    if (!variant) return;
+
+    const cartItem: CartItem = {
+      product,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity: 1,
+      selectedOptions: variant.selectedOptions || [],
+    };
+
+    addItem(cartItem);
+    toast.success(`${product.node.title} added to cart`);
     setCartOpen(true);
   };
 
   // Filter products
   const filteredProducts = products.filter((product) => {
-    const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
-    const statusMatch = selectedStatuses.length === 0 || selectedStatuses.includes(product.status);
-    const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-    return categoryMatch && statusMatch && priceMatch;
+    const price = parseFloat(product.node.priceRange.minVariantPrice.amount);
+    const priceMatch = price >= priceRange[0] && price <= priceRange[1];
+    const variant = product.node.variants.edges[0]?.node;
+    const statusMatch = selectedStatuses.length === 0 || 
+      (selectedStatuses.includes('available') && variant?.availableForSale) ||
+      (selectedStatuses.includes('sold-out') && !variant?.availableForSale);
+    return priceMatch && statusMatch;
   });
-
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
-    );
-  };
 
   const toggleStatus = (status: string) => {
     setSelectedStatuses(prev => 
@@ -73,18 +99,24 @@ const Shop = () => {
   };
 
   const clearFilters = () => {
-    setSelectedCategories([]);
     setSelectedStatuses([]);
-    setPriceRange([0, maxPrice]);
+    const maxPrice = products.length > 0 
+      ? Math.max(...products.map(p => parseFloat(p.node.priceRange.minVariantPrice.amount)))
+      : 20000;
+    setPriceRange([0, Math.ceil(maxPrice)]);
   };
 
-  const hasActiveFilters = selectedCategories.length > 0 || selectedStatuses.length > 0 || 
-    priceRange[0] !== 0 || priceRange[1] !== maxPrice;
+  const maxPrice = products.length > 0 
+    ? Math.max(...products.map(p => parseFloat(p.node.priceRange.minVariantPrice.amount)))
+    : 20000;
+
+  const hasActiveFilters = selectedStatuses.length > 0 || 
+    priceRange[0] !== 0 || priceRange[1] !== Math.ceil(maxPrice);
 
   return (
     <div className="min-h-screen bg-background pt-16">
       <TextCarousel />
-      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getItemsCount()} />
+      <Header onCartOpen={() => setCartOpen(true)} cartItemsCount={getTotalItems()} />
 
       <div className="container mx-auto px-4 pt-32 pb-12">
         <h1 className="font-serif text-4xl md:text-5xl text-primary mb-8 uppercase tracking-wide">
@@ -102,7 +134,7 @@ const Shop = () => {
                 <div className="flex items-center gap-2">
                   <SlidersHorizontal className="h-4 w-4" />
                   <span className="font-medium text-sm uppercase tracking-wider">
-                    Filters {hasActiveFilters && `(${selectedCategories.length + selectedStatuses.length + (priceRange[0] !== 0 || priceRange[1] !== maxPrice ? 1 : 0)} active)`}
+                    Filters {hasActiveFilters && `(active)`}
                   </span>
                 </div>
                 {filtersOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -112,39 +144,26 @@ const Shop = () => {
             <CollapsibleContent className="mt-2">
               <div className="bg-card border border-border rounded-lg p-6">
                 <div className="flex flex-col lg:flex-row gap-6">
-                  {/* Category Filter */}
-                  <div className="flex-1">
-                    <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Category</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {categories.map((category) => (
-                        <Button
-                          key={category}
-                          variant={selectedCategories.includes(category) ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => toggleCategory(category)}
-                          className="text-xs"
-                        >
-                          {category}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Status Filter */}
                   <div className="flex-1">
-                    <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Status</h3>
+                    <h3 className="font-medium mb-3 text-sm uppercase tracking-wider text-foreground">Availability</h3>
                     <div className="flex flex-wrap gap-2">
-                      {statuses.map((status) => (
-                        <Button
-                          key={status}
-                          variant={selectedStatuses.includes(status) ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => toggleStatus(status)}
-                          className="text-xs"
-                        >
-                          {status}
-                        </Button>
-                      ))}
+                      <Button
+                        variant={selectedStatuses.includes('available') ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleStatus('available')}
+                        className="text-xs"
+                      >
+                        In Stock
+                      </Button>
+                      <Button
+                        variant={selectedStatuses.includes('sold-out') ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleStatus('sold-out')}
+                        className="text-xs"
+                      >
+                        Sold Out
+                      </Button>
                     </div>
                   </div>
 
@@ -155,8 +174,8 @@ const Shop = () => {
                     </h3>
                     <Slider
                       min={0}
-                      max={maxPrice}
-                      step={1000}
+                      max={Math.ceil(maxPrice)}
+                      step={500}
                       value={priceRange}
                       onValueChange={setPriceRange}
                       className="mt-2"
@@ -188,22 +207,32 @@ const Shop = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {filteredProducts.map((product, index) => (
-            <div
-              key={product.id}
-              data-product-card
-              data-index={index}
-              className={`transition-all duration-700 ${
-                visibleProducts.has(index)
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <ProductCard product={product} onAddToCart={handleAddToCart} />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-24">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-24">
+            <p className="text-muted-foreground text-lg">No products found</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            {filteredProducts.map((product, index) => (
+              <div
+                key={product.node.id}
+                data-product-card
+                data-index={index}
+                className={`transition-all duration-700 ${
+                  visibleProducts.has(index)
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }`}
+              >
+                <ShopifyProductCard product={product} onAddToCart={handleAddToCart} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <Cart
